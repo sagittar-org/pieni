@@ -21,7 +21,13 @@
         "phpoffice/phpspreadsheet": "1.2.1"
     },
     "scripts": {
+        "post-install-cmd": [
+            "echo 'post-install-cmd'"
+        ]
+    },
+    "scripts": {
         "post-update-cmd": [
+            "echo 'post-update-cmd'",
             "[ ! -e ../../../.htaccess ] && cp .htaccess ../../../",
             "[ ! -e ../../../index.php ] && cp index.php ../../../"
         ]
