@@ -14,5 +14,15 @@
             "name": "Sagittarius Systems",
             "homepage": "https://github.com/sagittar-org"
         }
+<<<<<<< HEAD
     ]
 }
+=======
+    ],
+    "require": {
+        "components/jquery": "3.3.1",
+        "twbs/bootstrap": "3.3.7",
+        "phpoffice/phpspreadsheet": "1.2.1"
+    }
+}
+>>>>>>> kenta.saito
