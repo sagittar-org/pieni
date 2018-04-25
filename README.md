@@ -11,6 +11,7 @@ Apache 2.4.x / MySQL 5.7.x / PHP 7.0.x
 composer require pieni/pieni:dev-master
 cp vendor/pieni/pieni/index.php .
 cp vendor/pieni/pieni/.htaccess .
+cp vendor/pieni/pieni/.gitignore .
 ```
 
 ## License
