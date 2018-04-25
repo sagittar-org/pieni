@@ -19,15 +19,5 @@
         "components/jquery": "3.3.1",
         "twbs/bootstrap": "3.3.7",
         "phpoffice/phpspreadsheet": "1.2.1"
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "echo 'post-install-cmd'"
-        ],
-        "post-update-cmd": [
-            "echo 'post-update-cmd'",
-            "[ ! -e ../../../.htaccess ] && cp .htaccess ../../../",
-            "[ ! -e ../../../index.php ] && cp index.php ../../../"
-        ]
     }
 }
