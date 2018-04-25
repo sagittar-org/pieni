@@ -1,0 +1,18 @@
+{
+    "name": "pieni/pieni",
+    "description": "the rapid prototyping",
+    "type": "library",
+    "keywords": [
+        "framework",
+        "php",
+        "rapid prototyping"
+    ],
+    "homepage": "https://github.com/sagittar-org/pieni",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sagittarius Systems",
+            "homepage": "https://github.com/sagittar-org"
+        }
+    ]
+}
