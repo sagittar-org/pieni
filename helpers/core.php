@@ -1,8 +1,9 @@
 <?php
-function e($expr)
+// Show variables
+function e($vars)
 {
 	echo "<pre>\n";
-	var_export($expr);
+	var_export($vars);
 	echo "</pre>\n";
 	ob_end_flush();
 	ob_start();
