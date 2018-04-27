@@ -35,7 +35,7 @@ class Welcome
 			new TablesExcel(FCPATH.'/application/database_schemas/excel'),
 			new TablesMysql('tables', new DbMysql('localhost', 'root', '', 'sakila'))
 		], new DbMysql('localhost', 'root', '', 'sakila'));
-		var_dump($database_schema->get('categories', false));
+		var_dump($database_schema->get('film', false));
 exit;
 //		redirect('welcome');
 	}

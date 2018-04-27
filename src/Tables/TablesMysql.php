@@ -16,7 +16,7 @@ class TablesMysql
 	{
 		foreach (array_keys($columns) as $table) {
 			$data[$table] = [];
-			$result = $this->db->query("SELECT `key`, `".(implode('`, `', $columns[$table]))."` FROM `{$this->database}-{$name}`.`{$table}` ORDER BY `id` ASC");
+			$result = $this->db->query("SELECT `".(implode('`, `', array_merge(['key'], $columns[$table])))."` FROM `{$this->database}-{$name}`.`{$table}` ORDER BY `id` ASC");
 			while (($row = $result->fetch_assoc()) !== null) {
 				$key = array_shift($row);
 				$data[$table][$key] = $row;
@@ -37,11 +37,11 @@ class TablesMysql
 			}
 			$this->db->query("CREATE TABLE `{$this->database}-{$name}`.`{$table}` (`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, `key` varchar(255) NOT NULL UNIQUE{$column_defs});");
 			foreach ($rows as $key => $row) {
-				$field_defs = '';
+				$field_defs = "'{$key}'";
 				foreach ($row as $c => $field) {
 					$field_defs .= ", '{$field}'";
 				}
-				$this->db->query("INSERT INTO `{$this->database}-{$name}`.`{$table}` (`key`, `".(implode('`, `', $columns[$table]))."`) VALUES ('{$key}'{$field_defs});");
+				$this->db->query("INSERT INTO `{$this->database}-{$name}`.`{$table}` (`".(implode('`, `', array_merge(['key'], $columns[$table])))."`) VALUES ({$field_defs});");
 			}
 		}
 	}
