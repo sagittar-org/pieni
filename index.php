@@ -12,8 +12,10 @@ set_error_handler('error_handler');
 // Start output buffer
 ob_start();
 
-// Request and Response
+// Request
 $vars = request(isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/');
+
+// Response
 load_view($vars['class'], 'template', $vars);
 
 // Flush output buffer

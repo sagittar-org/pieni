@@ -1,32 +1,4 @@
 <?php
-// Hyper link
-function href($path, $return = false)
-{
-	$url = '/'.trim(
-		preg_replace('/index.php$/', '',
-			preg_replace("#^{$_SERVER['DOCUMENT_ROOT']}#", '', $_SERVER['SCRIPT_FILENAME'])
-		),'/'
-	)."/{$path}";
-	if ($return === true) {
-		return $url;
-	}
-	echo $url;
-}
-
-// Hyper link for public directory
-function public_href($path, $return = false)
-{
-	$url = preg_replace('#^'.FCPATH.'/#', '', fallback([g('packages'), ["public/{$path}"]]));
-	$package = preg_replace('#/public/.*#', '', $url);
-	@mkdir('public/'.dirname($package), 0755, true);
-	@symlink(str_repeat('../', substr_count($package, '/') + 1)."{$package}/public", "public/{$package}");
-	$url = href('public/'.preg_replace('#public/#', '', $url), true);
-	if ($return === true) {
-		return $url;
-	}
-	echo $url;
-}
-
 // Show variables
 function e($vars)
 {
@@ -89,24 +61,49 @@ function error_handler($errno, $errstr, $errfile, $errline)
 {
 	if (error_reporting() === 0) return;
 	ob_end_clean();
-	$errors = [1 => 'ERROR', 2 => 'WARNING', 4 => 'PARSE', 8 => 'NOTICE', 16 => 'CORE_ERROR', 32 => 'CORE_WARNING', 64 => 'COMPILE_ERROR', 128 => 'COMPILE_WARNING', 256 => 'USER_ERROR', 512 => 'USER_WARNING', 1024 => 'USER_NOTICE', 2048 => 'STRICT', 4096 => 'RECOVERABLE_ERROR', 8192 => 'DEPRECATED', 16384 => 'USER_DEPRECATED'];
-	echo "<pre><b>{$errors[$errno]}</b>: {$errstr} in <b>{$errfile}</b> on line <b>{$errline}</b></pre>";
+	$vars = ['class' => 'errors', 'method' => 'index', 'errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline];
+	load_view('errors', 'template', $vars);
 	exit(1);
 }
 
 // Request
 function request($path_info)
 {
+	require_once 'vendor/autoload.php';
+	load_helper('view');
 	$params = trim($path_info, '/') !== '' ? explode('/', trim($path_info, '/')) : [];
 	$class = count($params) > 0 ? array_shift($params) : 'welcome';
-	require_once fallback([g('packages'), ['controllers'], [ucfirst($class).'.php', 'crud.php']]);
-	$method = count($params) > 0 ? array_shift($method) : 'index';
+	$method = count($params) > 0 ? array_shift($params) : 'index';
+	load_controller(ucfirst($class));
 	$controller = new $class();
-	return ['class' => $class, 'method' => $method] + call_user_func_array([$controller, $method], $params);
+	if (!method_exists($controller, $method)) {
+		$backtrace = debug_backtrace()[0];
+		error_handler(E_USER_ERROR, "{$backtrace['function']}('{$path_info}'): class '".ucfirst($class)."' does not have a method '{$method}'", $backtrace['file'], $backtrace['line']);
+	}
+	$vars = call_user_func_array([$controller, $method], $params);
+	return ['class' => $class, 'method' => $method] + (is_array($vars) ? $vars : []);
+}
+
+// Load controller
+function load_controller($class)
+{
+	require_once fallback([g('packages'), ['controllers'], ["{$class}.php", 'crud.php']]);
 }
 
 // Load view
-function load_view($class, $name, $vars)
+function load_view($class, $name, $vars = [])
 {
-	require_once fallback([g('packages'), ['views'], [$class, 'crud', ''], ["{$name}.php"]]);
+	require fallback([g('packages'), ['views'], [$class, 'crud', ''], ["{$name}.php"]]);
+}
+
+// Load helper
+function load_helper($name)
+{
+	require_once fallback([g('packages'), ['helpers'], ["{$name}.php"]]);
+}
+
+// Load class
+function load_class($class)
+{
+	require_once fallback([g('packages'), ['src'], ["{$class}.php"]]);
 }
