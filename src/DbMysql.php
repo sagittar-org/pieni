@@ -8,6 +8,17 @@ class DbMysql extends Mysqli
 		$this->database = $database;
 	}
 
+	public function query($query)
+	{
+		try {
+			$result = parent::query($query);
+		} catch (Exception $e) {
+			$backtrace = debug_backtrace()[0];
+			error_handler(E_USER_ERROR, "{$backtrace['function']}(".print_r($backtrace['args'], true)."): ".$e->getMessage(), $backtrace['file'], $backtrace['line']);
+		}
+		return $result;
+	}
+
 	public function hashes($query, $primary_keys, $unset_primary_keys = false)
 	{
 		$hashes = [];

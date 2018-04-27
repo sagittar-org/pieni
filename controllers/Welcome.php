@@ -12,6 +12,10 @@ class Welcome
 
 	public function get_started()
 	{
+		load_class('DbMysql');
+		$db = new DbMysql('localhost', 'root', '', 'sakila');
+		$result = $db->query("SELECT * FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = 'mysql'");
+		e($result);
 	}
 
 	public function start_hack()
@@ -29,9 +33,9 @@ class Welcome
 		$database_schema = new DatabaseSchema([
 			new TablesJson(FCPATH.'/application/database_schemas/json'),
 			new TablesExcel(FCPATH.'/application/database_schemas/excel'),
-			new TablesMysql('tables', new Mysqli('localhost', 'root', ''))
-		], new DbMysql('localhost', 'root', '', 'employees'));
-		var_dump($database_schema->get('departments', false));
+			new TablesMysql('tables', new DbMysql('localhost', 'root', '', 'sakila'))
+		], new DbMysql('localhost', 'root', '', 'sakila'));
+		var_dump($database_schema->get('categories', false));
 exit;
 //		redirect('welcome');
 	}
