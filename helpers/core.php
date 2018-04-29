@@ -1,26 +1,50 @@
 <?php
-// Show variables
-function e($vars)
+// Load view
+function load_view($class, $name, $vars = [])
 {
-	echo "<pre>\n";
-	var_export($vars);
-	echo "</pre>\n";
-	ob_end_flush();
-	ob_start();
+	require fallback([g('packages'), ['views'], [$class, 'crud', ''], ["{$name}.php"]]);
 }
 
-// Global valiables
-function g($path)
+// Request
+function request($path_info)
 {
-	$path = explode('.', $path);
-	$g = $GLOBALS;
-	foreach ($path as $key) {
-		if (!isset($g[$key])) {
-			return null;
-		}
-		$g = $g[$key];
+	set_error_handler('error_handler');
+	require_once FCPATH.'/vendor/autoload.php';
+	load_helper('view');
+	$request['params'] = trim($path_info, '/') !== '' ? explode('/', trim($path_info, '/')) : [];
+	$request['class'] = count($request['params']) > 0 ? array_shift($request['params']) : 'welcome';
+	$request['method'] = count($request['params']) > 0 ? array_shift($request['params']) : 'index';
+	load_controller(ucfirst($request['class']));
+	$controller = new $request['class']($request);
+	if (!method_exists($controller, $request['method'])) {
+		trigger_error(json_encode(debug_backtrace()[0] + ['message' => "class '".ucfirst($request['class'])."' does not have a method '{$request['method']}'"]), E_USER_ERROR);
 	}
-	return $g;
+	$vars = call_user_func_array([$controller, $request['method']], $request['params']);
+	return $request + (is_array($vars) ? $vars : []);
+}
+
+// Load controller
+function load_controller($class)
+{
+	require_once fallback([g('packages'), ['controllers'], ["{$class}.php", 'Crud.php']]);
+}
+
+// Load helper
+function load_helper($name)
+{
+	require_once fallback([g('packages'), ['helpers'], ["{$name}.php"]]);
+}
+
+// Fallback
+function fallback($array)
+{
+	foreach (cartesian($array) as $fallback) {
+		if (file_exists($fallback)) {
+			return $fallback;
+		}
+	}
+	trigger_error(json_encode(debug_backtrace()[0] + ['message' => 'Fallback failed']), E_USER_ERROR);
+	return false;
 }
 
 // Cartesian
@@ -41,69 +65,66 @@ function cartesian($array)
 	return $cartesian;
 }
 
-// Fallback
-function fallback($array)
+// Global valiables
+function g($path)
 {
-	foreach (cartesian($array) as $fallback) {
-		if (file_exists($fallback)) {
-			return $fallback;
+	$path = explode('.', $path);
+	$g = $GLOBALS;
+	foreach ($path as $key) {
+		if (!isset($g[$key])) {
+			return null;
 		}
+		$g = $g[$key];
 	}
-	if (error_reporting() !== 0) {
-		$backtrace = debug_backtrace()[1];
-		error_handler(E_USER_ERROR, "{$backtrace['function']}(".print_r($backtrace['args'], true)."): File not found", $backtrace['file'], $backtrace['line']);
-	}
-	return null;
+	return $g;
 }
 
 // Error handler
-function error_handler($errno, $errstr, $errfile, $errline)
+function error_handler($level, $message, $file, $line)
 {
-	if (error_reporting() === 0) return;
-	ob_end_clean();
-	$vars = ['class' => 'errors', 'method' => 'index', 'errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline];
-	load_view('errors', 'template', $vars);
+	if (($level & error_reporting()) === 0) return;
+	$vars = json_decode($message, true);
+	if ($level !== E_USER_ERROR || json_last_error() !== JSON_ERROR_NONE) {
+		$vars = ['message' => $message, 'file' => $file, 'line' => $line];
+	}
+	if (function_exists('load_view')) {
+		load_view('errors', 'template', $vars);
+	} else {
+		print_r($vars);
+	}
 	exit(1);
 }
 
-// Request
-function request($path_info)
+// Hyper link for public directory
+function public_href($path, $return = false)
 {
-	require_once 'vendor/autoload.php';
-	load_helper('view');
-	$params = trim($path_info, '/') !== '' ? explode('/', trim($path_info, '/')) : [];
-	$class = count($params) > 0 ? array_shift($params) : 'welcome';
-	$method = count($params) > 0 ? array_shift($params) : 'index';
-	load_controller(ucfirst($class));
-	$controller = new $class();
-	if (!method_exists($controller, $method)) {
-		$backtrace = debug_backtrace()[0];
-		error_handler(E_USER_ERROR, "{$backtrace['function']}('{$path_info}'): class '".ucfirst($class)."' does not have a method '{$method}'", $backtrace['file'], $backtrace['line']);
+	$url = preg_replace('#^'.FCPATH.'/#', '', fallback([g('packages'), ["public/{$path}"]]));
+	$package = preg_replace('#/public/.*#', '', $url);
+	@mkdir('public/'.dirname($package), 0755, true);
+	@symlink(str_repeat('../', substr_count($package, '/') + 1)."{$package}/public", "public/{$package}");
+	$url = href('public/'.preg_replace('#public/#', '', $url), true);
+	if ($return === true) {
+		return $url;
 	}
-	$vars = call_user_func_array([$controller, $method], $params);
-	return ['class' => $class, 'method' => $method] + (is_array($vars) ? $vars : []);
+	echo $url;
 }
 
-// Load controller
-function load_controller($class)
+// Hyper link
+function href($path, $return = false)
 {
-	require_once fallback([g('packages'), ['controllers'], ["{$class}.php", 'crud.php']]);
+	$url = '/'.trim(
+		preg_replace('/index.php$/', '',
+			preg_replace("#^{$_SERVER['DOCUMENT_ROOT']}#", '', $_SERVER['SCRIPT_FILENAME'])
+		),'/'
+	)."/{$path}";
+	if ($return === true) {
+		return $url;
+	}
+	echo $url;
 }
 
-// Load view
-function load_view($class, $name, $vars = [])
+// h
+function h($str)
 {
-	require fallback([g('packages'), ['views'], [$class, 'crud', ''], ["{$name}.php"]]);
-}
-
-// Load helper
-function load_helper($name)
-{
-	require_once fallback([g('packages'), ['helpers'], ["{$name}.php"]]);
-}
-
-// Load class
-function load_class($class)
-{
-	require_once fallback([g('packages'), ['src'], ["{$class}.php"]]);
+	echo htmlentities($str);
 }

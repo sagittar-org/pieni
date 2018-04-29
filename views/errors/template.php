@@ -10,6 +10,17 @@
     <link href="<?php public_href('third_party/bootstrap/css/bootstrap-theme.min.css'); ?>" rel="stylesheet">
   </head>
   <body>
-<?php load_view($vars['class'], $vars['method'], $vars); ?>
+    <div class="container">
+      <h2>An Error Occurred</h2>
+      <blockquote><?php h($vars['message']); ?> in <b><?php h($vars['file']); ?></b> on line <b><?php h($vars['line']); ?></b></blockquote>
+<?php if (isset($vars['args'])): ?>
+      <h3>Arguments</h3>
+<?php foreach ($vars['args'] as $arg): ?>
+      <pre>
+<?php print_r($arg); ?>
+      </pre>
+<?php endforeach; ?>
+<?php endif; ?>
+    </div>
   </body>
 </html>

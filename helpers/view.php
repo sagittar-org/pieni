@@ -1,8 +1,36 @@
 <?php
-// h
-function h($str)
+// Library
+function lib($name)
 {
-	echo htmlentities($str);
+	return g("libraries.{$name}");
+}
+
+// Load library
+function load_library($class, $name = null, $params = [])
+{
+	if ($name === null) {
+		$name = $class;
+	}
+	if (!isset($GLOBALS['libraries'][$name])) {
+		load_class($class);
+		$GLOBALS['libraries'][$name] = (new ReflectionClass($class))->newInstanceArgs(array_slice(func_get_args(), 2));
+	}
+}
+
+// Load class
+function load_class($class)
+{
+	require_once fallback([g('packages'), ['src'], ["{$class}.php"]]);
+}
+
+// Show variables
+function e($vars)
+{
+	echo "<pre>\n";
+	var_export($vars);
+	echo "</pre>\n";
+	ob_end_flush();
+	ob_start();
 }
 
 // Redirect
@@ -10,32 +38,4 @@ function redirect($uri)
 {
 	header('Location: '.href($uri, true));
 	exit;
-}
-
-// Hyper link
-function href($path, $return = false)
-{
-	$url = '/'.trim(
-		preg_replace('/index.php$/', '',
-			preg_replace("#^{$_SERVER['DOCUMENT_ROOT']}#", '', $_SERVER['SCRIPT_FILENAME'])
-		),'/'
-	)."/{$path}";
-	if ($return === true) {
-		return $url;
-	}
-	echo $url;
-}
-
-// Hyper link for public directory
-function public_href($path, $return = false)
-{
-	$url = preg_replace('#^'.FCPATH.'/#', '', fallback([g('packages'), ["public/{$path}"]]));
-	$package = preg_replace('#/public/.*#', '', $url);
-	@mkdir('public/'.dirname($package), 0755, true);
-	@symlink(str_repeat('../', substr_count($package, '/') + 1)."{$package}/public", "public/{$package}");
-	$url = href('public/'.preg_replace('#public/#', '', $url), true);
-	if ($return === true) {
-		return $url;
-	}
-	echo $url;
 }

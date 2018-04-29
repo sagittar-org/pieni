@@ -1,20 +1,17 @@
 <?php
-class DbMysql extends Mysqli
+class Db extends Mysqli
 {
 	public function __construct($host, $user, $password, $database)
 	{
-		mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 		parent::__construct($host, $user, $password, $database);
 		$this->database = $database;
 	}
 
 	public function query($query)
 	{
-		try {
-			$result = parent::query($query);
-		} catch (Exception $e) {
-			$backtrace = debug_backtrace()[0];
-			error_handler(E_USER_ERROR, "{$backtrace['function']}(".print_r($backtrace['args'], true)."): ".$e->getMessage(), $backtrace['file'], $backtrace['line']);
+		$result = parent::query($query);
+		if ($result === false) {
+			trigger_error(json_encode(debug_backtrace()[0] + ['message' => $this->error]), E_USER_ERROR);
 		}
 		return $result;
 	}
