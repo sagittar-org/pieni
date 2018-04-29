@@ -18,6 +18,7 @@ class TablesJson
 
 	public function put($name, $data)
 	{
+		@mkdir($this->path, 0755, true);
 		return file_put_contents("{$this->path}/{$name}.json", json_encode($data, JSON_PRETTY_PRINT));
 	}
 }

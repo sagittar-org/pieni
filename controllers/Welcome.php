@@ -20,11 +20,16 @@ class Welcome
 		shell_exec('rm -r '.FCPATH.'/application');
 		mkdir(FCPATH.'/application');
 		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
-		load_library('Tables/TablesJson', 'tables_json', FCPATH);
-		load_library('TablesAliases', 'tables_aliases', lib('db'));
-		load_library('Tables/Tables', 'aliases_handler', [lib('tables_json'), lib('tables_aliases')]);
-		$aliases = lib('aliases_handler')->get('aliases');
-		e($aliases);
+		load_library('Tables/TablesJson', 'tables_json', FCPATH.'/application/database_schemas');
+		load_library('TablesDatabaseSchema', 'tables_database_schema', lib('db'));
+		load_library('Tables/Tables', 'database_schema_handler', [lib('tables_json'), lib('tables_database_schema')]);
+
+
+		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
+		foreach ($tables as $table) {
+			lib('database_schema_handler')->get($table);
+		}
+
 //		redirect('welcome');
 		exit;
 	}
