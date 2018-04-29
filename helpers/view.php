@@ -6,14 +6,11 @@ function lib($name)
 }
 
 // Load library
-function load_library($class, $name = null, $params = [])
+function load_library($class, $name, $params = [])
 {
-	if ($name === null) {
-		$name = $class;
-	}
 	if (!isset($GLOBALS['libraries'][$name])) {
 		load_class($class);
-		$GLOBALS['libraries'][$name] = (new ReflectionClass($class))->newInstanceArgs(array_slice(func_get_args(), 2));
+		$GLOBALS['libraries'][$name] = (new ReflectionClass(basename($class)))->newInstanceArgs(array_slice(func_get_args(), 2));
 	}
 }
 
