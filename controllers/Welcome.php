@@ -23,6 +23,8 @@ class Welcome
 		load_library('Tables/TablesJson', 'tables_json', FCPATH.'/application/database_schemas');
 		load_library('TablesDatabaseSchema', 'tables_database_schema', lib('db'));
 		load_library('Tables/Tables', 'database_schema_handler', [lib('tables_json'), lib('tables_database_schema')]);
+		load_library('TablesAliases', 'aliases_schema', lib('db'), lib('database_schema_handler'));
+		load_library('Tables/Tables', 'aliases_handler', [lib('tables_json'), lib('tables_database_schema')]);
 
 
 		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
