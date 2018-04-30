@@ -9,7 +9,12 @@ class TablesAliases
 
 	public function mtime($name)
 	{
-		return time();
+		$mtime = 0;
+		$tables = array_column($this->db->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '{$this->db->database}' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
+		foreach ($tables as $table) {
+			$mtime = max($mtime, $this->database_schema_handler->mtime($table));
+		}
+		return $mtime;
 	}
 
 	public function get($name)

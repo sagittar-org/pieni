@@ -8,7 +8,15 @@ class TablesDatabaseSchema
 
 	public function mtime($name)
 	{
-		return 0;
+		return strtotime($this->db->value("
+			SELECT
+				`CREATE_TIME`
+			FROM
+				`information_schema`.`TABLES`
+			WHERE
+				`TABLE_SCHEMA` = '{$this->db->database}' AND
+				`TABLE_NAME` = '{$name}'
+		")['value']);
 	}
 
 	public function get($name)
@@ -16,6 +24,24 @@ class TablesDatabaseSchema
 		$data['scalars']['comment'] = $this->db->value("
 			SELECT
 				`TABLE_COMMENT`
+			FROM
+				`information_schema`.`TABLES`
+			WHERE
+				`TABLE_SCHEMA` = '{$this->db->database}' AND
+				`TABLE_NAME` = '{$name}'
+		");
+		$data['scalars']['create_time'] = $this->db->value("
+			SELECT
+				`CREATE_TIME`
+			FROM
+				`information_schema`.`TABLES`
+			WHERE
+				`TABLE_SCHEMA` = '{$this->db->database}' AND
+				`TABLE_NAME` = '{$name}'
+		");
+		$data['scalars']['update_time'] = $this->db->value("
+			SELECT
+				`UPDATE_TIME`
 			FROM
 				`information_schema`.`TABLES`
 			WHERE

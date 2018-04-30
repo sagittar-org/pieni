@@ -6,6 +6,17 @@ class Tables
 		$this->drivers = $drivers;
 	}
 
+	public function mtime($name)
+	{
+		$latest = ['index' => -1, 'mtime' => -1];
+		foreach ($this->drivers as $index => $driver) {
+			if (($mtime = $driver->mtime($name)) > $latest['mtime']) {
+				$latest = ['index' => $index, 'mtime' => $mtime];
+			}
+		}
+		return $latest['mtime'];
+	}
+
 	public function get($name, $first = false)
 	{
 		if ($first === true) {
