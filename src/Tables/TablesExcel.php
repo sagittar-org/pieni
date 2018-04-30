@@ -8,7 +8,7 @@ class TablesExcel
 
 	public function mtime($name)
 	{
-		return -1; //file_exists("$this->path}/{$name}.xlsx") ? filemtime("{$this->path}/{$name}.xlsx") : -1;
+		return file_exists("{$this->path}/{$name}.xlsx") ? filemtime("{$this->path}/{$name}.xlsx") : -1;
 	}
 
 	public function get($columns, $name)
