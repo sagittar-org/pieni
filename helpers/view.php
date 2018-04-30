@@ -1,4 +1,15 @@
 <?php
+function benchmark($label = null)
+{
+	static $microtime;
+
+	$last_microtime = $microtime;
+	$microtime = microtime(true);
+	if ($label !== null) {
+		e([$label, number_format(($microtime - $last_microtime) * 1000).'ms']);
+	}
+}
+
 // Library
 function lib($name)
 {
