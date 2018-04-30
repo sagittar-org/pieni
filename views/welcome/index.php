@@ -35,6 +35,7 @@
 						<li><a href="#tabDatabaseSchemaPirmaryKeys" data-toggle="tab">Primary keys</a></li>
 						<li><a href="#tabDatabaseSchemaChildren" data-toggle="tab">Children</a></li>
 						<li><a href="#tabDatabaseSchemaParents" data-toggle="tab">Parents</a></li>
+						<li><a href="#tabDatabaseSchemaColumns" data-toggle="tab">Columns</a></li>
 					</ul>
 
 					<!-- Tab panes -->
@@ -92,6 +93,11 @@
 								<thead>
 									<tr>
 										<th>ID</th>
+										<th>Column</th>
+										<th>Parent table</th>
+										<th>Parent column</th>
+										<th>Updata time</th>
+										<th>Delete time</th>
 									</tr>
 								</thead>
 								<tbody id="tableDatabaseSchema_parents">
@@ -102,6 +108,31 @@
 										<td name="parent_column">(parent_column)</td>
 										<td name="update_rule">(update_rule)</td>
 										<td name="delete_rule">(delete_rule)</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane" id="tabDatabaseSchemaColumns">
+							<h4>Columns</h4>
+							<table class="table table-condensed">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Type</th>
+										<th>Nullable</th>
+										<th>Default</th>
+										<th>Extra</th>
+										<th>Comment</th>
+									</tr>
+								</thead>
+								<tbody id="tableDatabaseSchema_columns">
+									<tr>
+										<td name="id">(ID)</td>
+										<td name="type">(type)</td>
+										<td name="nullable">(nullable)</td>
+										<td name="default">(default)</td>
+										<td name="extra">(extra)</td>
+										<td name="comment">(comment)</td>
 									</tr>
 								</tbody>
 							</table>
