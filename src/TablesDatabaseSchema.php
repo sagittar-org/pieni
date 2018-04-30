@@ -3,9 +3,7 @@ class TablesDatabaseSchema
 {
 	public $columns = [
 		'scalars' => [
-			'comment',
-			'create_time',
-			'update_time',
+			'value',
 		],
 		'primary_keys' => [
 		],

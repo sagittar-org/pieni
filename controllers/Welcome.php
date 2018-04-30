@@ -45,7 +45,7 @@ class Welcome
 //		shell_exec('unzip -cq '.__DIR__.'/../misc/third_party/sakila/sakila.dump.zip | mysql -uroot');
 		shell_exec('rm -r '.FCPATH.'/application');
 		mkdir(FCPATH.'/application');
-		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
+		load_library('Db', 'db', 'localhost', 'root', '', 'employees');
 
 		// Database schema handler
 		load_library('Tables/TablesJson', 'tables_json_database_schema', FCPATH.'/application/database_schemas');

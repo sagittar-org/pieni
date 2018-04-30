@@ -1,10 +1,10 @@
 <?php
 class Tables
 {
-	public function __construct($drivers, $columns = [])
+	public function __construct($drivers)
 	{
 		$this->drivers = $drivers;
-		$this->columns = $columns;
+		$this->columns = end($drivers)->columns;
 	}
 
 	public function mtime($name)

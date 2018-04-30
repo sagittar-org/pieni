@@ -3,10 +3,7 @@ class TablesApplicationSchema
 {
 	public $columns = [
 		'scalars' => [
-			'comment',
-			'create_time',
-			'update_time',
-			'display',
+			'value',
 		],
 		'primary_keys' => [
 		],
@@ -18,7 +15,6 @@ class TablesApplicationSchema
 			'parent_column',
 			'update_rule',
 			'delete_rule',
-			'comment',
 		],
 		'columns' => [
 			'type',

@@ -21,9 +21,6 @@
       </pre>
 <?php endforeach; ?>
 <?php endif; ?>
-      <pre>
-<?php print_r(debug_backtrace()); ?>
-      </pre>
     </div>
   </body>
 </html>
