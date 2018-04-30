@@ -7,7 +7,33 @@ class Welcome
 		if (!file_exists(FCPATH.'/application')) {
 			redirect('welcome/get_started');
 		}
-		return ['message' => 'Welcome'];
+
+		// Database
+		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
+
+		// Database schema handler
+		load_library('Tables/TablesJson', 'tables_json_database_schema', FCPATH.'/application/database_schemas');
+		load_library('TablesDatabaseSchema', 'tables_database_schema', lib('db'));
+		load_library('Tables/Tables', 'database_schema_handler', [lib('tables_json_database_schema'), lib('tables_database_schema')]);
+
+		// Database schema
+		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
+		foreach ($tables as $table) {
+			$vars['database_schemas'][$table] = lib('database_schema_handler')->get($table);
+		}
+
+		// Application schema handler
+		load_library('Tables/TablesJson', 'tables_json_application_schema', FCPATH.'/application/application_schemas');
+		load_library('TablesApplicationSchema', 'tables_application_schema', lib('db'), lib('database_schema_handler'));
+		load_library('Tables/Tables', 'application_schema_handler', [lib('tables_json_application_schema'), lib('tables_application_schema')]);
+
+		// Application schema
+		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
+		foreach ($tables as $table) {
+			$vars['application_schemas'][$table] = lib('application_schema_handler')->get($table);
+		}
+
+		return $vars;
 	}
 
 	public function get_started()
@@ -36,16 +62,7 @@ class Welcome
 		load_library('TablesApplicationSchema', 'tables_application_schema', lib('db'), lib('database_schema_handler'));
 		load_library('Tables/Tables', 'application_schema_handler', [lib('tables_json_application_schema'), lib('tables_application_schema')]);
 
-		// Get aliases
-		lib('aliases_handler')->get('aliases');
-
-		// Get application schemas
-		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
-		foreach ($tables as $table) {
-			lib('application_schema_handler')->get($table);
-		}
-
-		// ER diagram
+		// Get ER diagram (using Aliases / Database schema)
 		foreach (lib('aliases_handler')->get('aliases') as $alias_key => $alias) {
 			if ($alias['table'] !== $alias_key) continue;
 			$nodes[] = "{$alias_key} [label=\"{$alias_key}\"];";
@@ -62,6 +79,12 @@ class Welcome
 		@mkdir('application/public', 0755, true);
 		file_put_contents(FCPATH.'/application/schema.dot', $dot);
 		shell_exec('dot -Tsvg '.FCPATH.'/application/schema.dot > '.FCPATH.'/application/public/schema.svg');
+
+		// Get application schemas
+		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
+		foreach ($tables as $table) {
+			lib('application_schema_handler')->get($table);
+		}
 
 		redirect('welcome');
 	}
