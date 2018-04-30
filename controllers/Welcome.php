@@ -1,4 +1,38 @@
 <?php
+function instantiate_database_schema_handler($db)
+{
+	load_library('Tables/TablesJson', 'tables_json_database_schema', FCPATH.'/application/database_schemas');
+	load_library('TablesDatabaseSchema', 'tables_database_schema', $db);
+	load_library('Tables/Tables', 'database_schema_handler', [
+		lib('tables_json_database_schema'),
+		lib('tables_database_schema')
+	]);
+}
+
+function instantiate_aliases_handler($db, $database_schema_handler)
+{
+	load_library('Tables/TablesJson', 'tables_json_aliases', FCPATH.'/application');
+	load_library('TablesAliases', 'tables_aliases', $db, $database_schema_handler);
+	load_library('Tables/Tables', 'aliases_handler', [
+		lib('tables_json_aliases'),
+		lib('tables_aliases'),
+	]);
+}
+
+function instantiate_application_schema_handler($db, $database_schema_handler)
+{
+	load_library('Tables/TablesJson', 'tables_json_application_schema', FCPATH.'/application/application_schemas');
+	load_library('Tables/TablesExcel', 'tables_excel_application_schema', FCPATH.'/application/excel/application_schemas');
+	load_library('Tables/TablesMysql', 'tables_mysql_application_schema', $db->database.'_application_schemas', $db);
+	load_library('TablesApplicationSchema', 'tables_application_schema', $db, $database_schema_handler);
+	load_library('Tables/Tables', 'application_schema_handler', [
+		lib('tables_json_application_schema'),
+		lib('tables_excel_application_schema'),
+		lib('tables_mysql_application_schema'),
+		lib('tables_application_schema'),
+	]);
+}
+
 class Welcome
 {
 	public function index()
@@ -8,30 +42,20 @@ class Welcome
 			redirect('welcome/get_started');
 		}
 
-		// Database
+		// Instantiate database handler
 		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
 
-		// Database schema handler
-		load_library('Tables/TablesJson', 'tables_json_database_schema', FCPATH.'/application/database_schemas');
-		load_library('TablesDatabaseSchema', 'tables_database_schema', lib('db'));
-		load_library('Tables/Tables', 'database_schema_handler', [
-			lib('tables_json_database_schema'),
-			lib('tables_database_schema')
-		]);
+		// Instantiate database schema handler
+		instantiate_database_schema_handler(lib('db'));
+
+		// Instantiate application schema handler
+		instantiate_application_schema_handler(lib('db'), lib('database_schema_handler'));
 
 		// Database schema
 		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
 		foreach ($tables as $table) {
 			$vars['database_schemas'][$table] = lib('database_schema_handler')->get($table);
 		}
-
-		// Application schema handler
-		load_library('Tables/TablesJson', 'tables_json_application_schema', FCPATH.'/application/application_schemas');
-		load_library('TablesApplicationSchema', 'tables_application_schema', lib('db'), lib('database_schema_handler'));
-		load_library('Tables/Tables', 'application_schema_handler', [
-			lib('tables_json_application_schema'),
-			lib('tables_application_schema'),
-		]);
 
 		// Application schema
 		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
@@ -51,35 +75,18 @@ class Welcome
 //		shell_exec('unzip -cq '.__DIR__.'/../misc/third_party/sakila/sakila.dump.zip | mysql -uroot');
 		shell_exec('rm -r '.FCPATH.'/application');
 		mkdir(FCPATH.'/application');
+
+		// Instantiate database handler
 		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
 
-		// Database schema handler
-		load_library('Tables/TablesJson', 'tables_json_database_schema', FCPATH.'/application/database_schemas');
-		load_library('TablesDatabaseSchema', 'tables_database_schema', lib('db'));
-		load_library('Tables/Tables', 'database_schema_handler', [
-			lib('tables_json_database_schema'),
-			lib('tables_database_schema'),
-		]);
+		// Instantiate database schema handler
+		instantiate_database_schema_handler(lib('db'));
 
-		// Aliases handler
-		load_library('Tables/TablesJson', 'tables_json_aliases', FCPATH.'/application');
-		load_library('TablesAliases', 'tables_aliases', lib('db'), lib('database_schema_handler'));
-		load_library('Tables/Tables', 'aliases_handler', [
-			lib('tables_json_aliases'),
-			lib('tables_aliases'),
-		]);
+		// Instantiate aliases handler
+		instantiate_aliases_handler(lib('db'), lib('database_schema_handler'));
 
-		// Application schema handler
-		load_library('Tables/TablesJson', 'tables_json_application_schema', FCPATH.'/application/application_schemas');
-		load_library('Tables/TablesExcel', 'tables_excel_application_schema', FCPATH.'/application/excel/application_schemas');
-		load_library('Tables/TablesMysql', 'tables_mysql_application_schema', lib('db')->database.'_application_schemas', lib('db'));
-		load_library('TablesApplicationSchema', 'tables_application_schema', lib('db'), lib('database_schema_handler'));
-		load_library('Tables/Tables', 'application_schema_handler', [
-			lib('tables_json_application_schema'),
-			lib('tables_excel_application_schema'),
-			lib('tables_mysql_application_schema'),
-			lib('tables_application_schema'),
-		]);
+		// Instantiate application schema handler
+		instantiate_application_schema_handler(lib('db'), lib('database_schema_handler'));
 
 		// Get ER diagram (using Aliases / Database schema)
 		foreach (lib('aliases_handler')->get('aliases')['scalars'] as $alias_key => $alias) {
