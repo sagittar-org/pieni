@@ -1,4 +1,11 @@
 <?php
+// Response
+function response($vars)
+{
+e($vars);
+	load_view(g('request.class'), 'template', $vars);
+}
+
 // Load view
 function load_view($class, $name, $vars = [])
 {
@@ -12,15 +19,16 @@ function request($path_info)
 	require_once FCPATH.'/vendor/autoload.php';
 	load_helper('view');
 	$request['params'] = trim($path_info, '/') !== '' ? explode('/', trim($path_info, '/')) : [];
+	$request['type'] = count($request['params']) > 0 && $request['params'][0] === 'api' ? 'api' : 'view';
 	$request['class'] = count($request['params']) > 0 ? array_shift($request['params']) : 'welcome';
 	$request['method'] = count($request['params']) > 0 ? array_shift($request['params']) : 'index';
 	load_controller(ucfirst($request['class']));
-	$controller = new $request['class']($request);
+	$controller = new $request['class'](['request' => $request]);
 	if (!method_exists($controller, $request['method'])) {
 		trigger_error(json_encode(debug_backtrace()[0] + ['message' => "class '".ucfirst($request['class'])."' does not have a method '{$request['method']}'"]), E_USER_ERROR);
 	}
 	$vars = call_user_func_array([$controller, $request['method']], $request['params']);
-	return $request + (is_array($vars) ? $vars : []);
+	return ['request' => $request] + (is_array($vars) ? $vars : []);
 }
 
 // Load controller

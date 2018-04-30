@@ -10,6 +10,6 @@
     <link href="<?php public_href('third_party/bootstrap/css/bootstrap-theme.min.css'); ?>" rel="stylesheet">
   </head>
   <body>
-<?php load_view($vars['class'], $vars['method'], $vars); ?>
+<?php load_view($vars['request']['class'], $vars['request']['method'], $vars); ?>
   </body>
 </html>
