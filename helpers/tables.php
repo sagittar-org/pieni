@@ -27,8 +27,8 @@ function instantiate_application_schema_handler($db, $database_schema_handler)
 	load_library('TablesApplicationSchema', 'tables_application_schema', $db, $database_schema_handler);
 	load_library('Tables/Tables', 'application_schema_handler', [
 		lib('tables_json_application_schema'),
-//		lib('tables_excel_application_schema'),
-//		lib('tables_mysql_application_schema'),
+		lib('tables_excel_application_schema'),
+		lib('tables_mysql_application_schema'),
 		lib('tables_application_schema'),
 	]);
 }
