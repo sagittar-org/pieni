@@ -27,21 +27,22 @@ class TablesMysql
 
 	public function put($columns, $name, $data)
 	{
-		$this->db->query("DROP DATABASE IF EXISTS `{$this->database}-{$name}`");
-		$this->db->query("CREATE DATABASE `{$this->database}-{$name}`");
+		$this->db->query("DROP DATABASE IF EXISTS `{$this->database}_{$name}`");
+		$this->db->query("CREATE DATABASE `{$this->database}_{$name}`");
 		foreach (array_keys($columns) as $table) {
 			$rows = $data[$table];
 			$column_defs = '';
 			foreach ($columns[$table] as $c => $column) {
 				$column_defs .= ", `{$column}` text NOT NULL";
 			}
-			$this->db->query("CREATE TABLE `{$this->database}-{$name}`.`{$table}` (`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, `key` varchar(255) NOT NULL UNIQUE{$column_defs});");
+			$this->db->query("CREATE TABLE `{$this->database}_{$name}`.`{$table}` (`id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT, `key` varchar(255) NOT NULL UNIQUE{$column_defs});");
 			foreach ($rows as $key => $row) {
 				$field_defs = "'{$key}'";
 				foreach ($row as $c => $field) {
+					$field = $this->db->real_escape_string($field);
 					$field_defs .= ", '{$field}'";
 				}
-				$this->db->query("INSERT INTO `{$this->database}-{$name}`.`{$table}` (`".(implode('`, `', array_merge(['key'], $columns[$table])))."`) VALUES ({$field_defs});");
+				$this->db->query("INSERT INTO `{$this->database}_{$name}`.`{$table}` (`".(implode('`, `', array_merge(['key'], $columns[$table])))."`) VALUES ({$field_defs});");
 			}
 		}
 	}
