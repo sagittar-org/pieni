@@ -2,8 +2,11 @@
 // Response
 function response($vars)
 {
-e($vars);
-	load_view(g('request.class'), 'template', $vars);
+	if ($vars['request']['type'] === 'view') {
+		load_view(g('request.class'), 'template', $vars);
+	} elseif ($vars['request']['type'] === 'api') {
+		echo json_encode($vars);
+	}
 }
 
 // Load view
