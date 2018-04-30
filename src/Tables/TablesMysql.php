@@ -16,7 +16,7 @@ class TablesMysql
 	{
 		foreach (array_keys($columns) as $table) {
 			$data[$table] = [];
-			$result = $this->db->query("SELECT `".(implode('`, `', array_merge(['key'], $columns[$table])))."` FROM `{$this->database}-{$name}`.`{$table}` ORDER BY `id` ASC");
+			$result = $this->db->query("SELECT `".(implode('`, `', array_merge(['key'], $columns[$table])))."` FROM `{$this->database}_{$name}`.`{$table}` ORDER BY `id` ASC");
 			while (($row = $result->fetch_assoc()) !== null) {
 				$key = array_shift($row);
 				$data[$table][$key] = $row;

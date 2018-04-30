@@ -30,12 +30,10 @@ class Tables
 			}
 			$mtimes[$index] = $mtime;
 		}
-e($mtimes);
 		$data = $this->drivers[$latest['index']]->get($this->columns, $name);
 		foreach ($this->drivers as $index => $driver) {
-benchmark();
+			if ($mtimes[$index] >= $latest['mtime']) continue;
 			$driver->put($this->columns, $name, $data);
-benchmark("name:{$name}, index:{$index}");
 		}
 		return $data;
 	}
