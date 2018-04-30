@@ -1,5 +1,5 @@
 <div class="container">
-	<h1>Prototyping Console</h1>
+	<h1>Prototyping console</h1>
 
 	<!-- Nav tabs -->
 	<ul class="nav nav-tabs">
