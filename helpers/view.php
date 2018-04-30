@@ -1,4 +1,19 @@
 <?php
+// Model
+function mod($name)
+{
+	return g("models.{$name}");
+}
+
+// Load model
+function load_model($class, $name)
+{
+	if (!isset($GLOBALS['models'][$name])) {
+		require_once fallback([g('packages'), ['models'], ["{$class}.php"]]);
+		$GLOBALS['models'][$name] = (new ReflectionClass(basename($class)))->newInstanceArgs(array_slice(func_get_args(), 2));
+	}
+}
+
 function benchmark($label = null)
 {
 	static $microtime;

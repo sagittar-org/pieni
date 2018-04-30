@@ -22,7 +22,7 @@ function request($path_info)
 	require_once FCPATH.'/vendor/autoload.php';
 	load_helper('view');
 	$request['params'] = trim($path_info, '/') !== '' ? explode('/', trim($path_info, '/')) : [];
-	$request['type'] = count($request['params']) > 0 && $request['params'][0] === 'api' ? 'api' : 'view';
+	$request['type'] = count($request['params']) > 0 && $request['params'][0] === 'api' ? array_shift($request['params']) : 'view';
 	$request['class'] = count($request['params']) > 0 ? array_shift($request['params']) : 'welcome';
 	$request['method'] = count($request['params']) > 0 ? array_shift($request['params']) : 'index';
 	load_controller(ucfirst($request['class']));
