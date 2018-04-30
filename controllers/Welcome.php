@@ -59,8 +59,9 @@ class Welcome
 
 		// Application schema handler
 		load_library('Tables/TablesJson', 'tables_json_application_schema', FCPATH.'/application/application_schemas');
+		load_library('Tables/TablesExcel', 'tables_excel_application_schema', FCPATH.'/application/excel/application_schemas');
 		load_library('TablesApplicationSchema', 'tables_application_schema', lib('db'), lib('database_schema_handler'));
-		load_library('Tables/Tables', 'application_schema_handler', [lib('tables_json_application_schema'), lib('tables_application_schema')]);
+		load_library('Tables/Tables', 'application_schema_handler', [lib('tables_json_application_schema'), lib('tables_excel_application_schema'), lib('tables_application_schema')]);
 
 		// Get ER diagram (using Aliases / Database schema)
 		foreach (lib('aliases_handler')->get('aliases')['scalars'] as $alias_key => $alias) {
