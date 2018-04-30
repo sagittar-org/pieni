@@ -84,6 +84,7 @@ class TablesDatabaseSchema
 			ORDER BY
 				`ORDINAL_POSITION` ASC
 		", ['COLUMN_NAME'], true);
+benchmark();
 		$data['children'] = $this->db->hashes("
 			SELECT
 				`CONSTRAINT_NAME`
@@ -98,6 +99,7 @@ class TablesDatabaseSchema
 				`TABLE_NAME` ASC,
 				`ORDINAL_POSITION` ASC
 		", ['CONSTRAINT_NAME'], true);
+benchmark("Get database schema - {$name}");
 		$data['parents'] = $this->db->hashes("
 			SELECT
 				`CONSTRAINT_NAME`,
@@ -132,6 +134,7 @@ class TablesDatabaseSchema
 			ORDER BY
 				`ORDINAL_POSITION` ASC
 		", ['COLUMN_NAME'], true);
+
 		return $data;
 	}
 
