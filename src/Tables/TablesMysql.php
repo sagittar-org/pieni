@@ -9,7 +9,7 @@ class TablesMysql
 
 	public function mtime($name)
 	{
-		return strtotime($this->db->query("SELECT MAX(`UPDATE_TIME`) FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '{$this->database}-{$name}'")->fetch_array()[0]);
+		return strtotime($this->db->query("SELECT MAX(`UPDATE_TIME`) FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '{$this->database}_{$name}'")->fetch_array()[0]);
 	}
 
 	public function get($columns, $name)
