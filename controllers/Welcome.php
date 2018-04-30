@@ -45,7 +45,24 @@ class Welcome
 			lib('application_schema_handler')->get($table);
 		}
 
-//		redirect('welcome');
-		exit;
+		// ER diagram
+		foreach (lib('aliases_handler')->get('aliases') as $alias_key => $alias) {
+			if ($alias['table'] !== $alias_key) continue;
+			$nodes[] = "{$alias_key} [label=\"{$alias_key}\"];";
+		}
+		$nodes_str = implode("\n\t", $nodes);
+		foreach (lib('aliases_handler')->get('aliases') as $alias_key => $alias) {
+			if ($alias['table'] !== $alias_key) continue;
+			foreach (lib('database_schema_handler')->get($alias['table'])['parents'] as $parent_key => $parent) {
+				$edges[] = "{$parent['parent_table']} -> {$alias['table']} [arrowhead=\"crow\", label=\"{$parent_key}\", fontsize=10];";
+			}
+		}
+		$edges_str = implode("\n\t", $edges);
+		$dot = "digraph database_schema {\n\trankdir=LR;\n\t{$nodes_str}\n\t{$edges_str}\n\t}\n";
+		@mkdir('application/public', 0755, true);
+		file_put_contents(FCPATH.'/application/schema.dot', $dot);
+		shell_exec('dot -Tsvg '.FCPATH.'/application/schema.dot > '.FCPATH.'/application/public/schema.svg');
+
+		redirect('welcome');
 	}
 }

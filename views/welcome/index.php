@@ -1,5 +1,7 @@
 <div class="container">
 	<h1>Prototyping Console</h1>
+	<h2>Aliases</h2>
+	<img src="<?php public_href('schema.svg'); ?>">
 	<pre>
 	<?php print_r($vars); ?>
 	</pre>
