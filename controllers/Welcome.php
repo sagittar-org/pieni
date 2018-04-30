@@ -20,17 +20,18 @@ class Welcome
 		shell_exec('rm -r '.FCPATH.'/application');
 		mkdir(FCPATH.'/application');
 		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
-		load_library('Tables/TablesJson', 'tables_json', FCPATH.'/application/database_schemas');
+
+		// Database schema handler
+		load_library('Tables/TablesJson', 'tables_json_database_schema', FCPATH.'/application/database_schemas');
 		load_library('TablesDatabaseSchema', 'tables_database_schema', lib('db'));
-		load_library('Tables/Tables', 'database_schema_handler', [lib('tables_json'), lib('tables_database_schema')]);
-		load_library('TablesAliases', 'aliases_schema', lib('db'), lib('database_schema_handler'));
-		load_library('Tables/Tables', 'aliases_handler', [lib('tables_json'), lib('tables_database_schema')]);
+		load_library('Tables/Tables', 'database_schema_handler', [lib('tables_json_database_schema'), lib('tables_database_schema')]);
 
+		// Aliases handler
+		load_library('Tables/TablesJson', 'tables_json_aliases', FCPATH.'/application');
+		load_library('TablesAliases', 'tables_aliases', lib('db'), lib('database_schema_handler'));
+		load_library('Tables/Tables', 'aliases_handler', [lib('tables_json_aliases'), lib('tables_aliases')]);
 
-		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
-		foreach ($tables as $table) {
-			lib('database_schema_handler')->get($table);
-		}
+		lib('aliases_handler')->get('aliases');
 
 //		redirect('welcome');
 		exit;
