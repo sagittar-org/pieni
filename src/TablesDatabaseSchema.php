@@ -1,6 +1,32 @@
 <?php
 class TablesDatabaseSchema
 {
+	public $columns = [
+		'scalars' => [
+			'comment',
+			'create_time',
+			'update_time',
+		],
+		'primary_keys' => [
+		],
+		'children' => [
+		],
+		'parents' => [
+			'column',
+			'parent_table',
+			'parent_column',
+			'update_rule',
+			'delete_rule',
+		],
+		'columns' => [
+			'type',
+			'nullable',
+			'default',
+			'extra',
+			'comment',
+		],
+	];
+
 	public function __construct($db)
 	{
 		$this->db = $db;
@@ -19,7 +45,7 @@ class TablesDatabaseSchema
 		")['value']);
 	}
 
-	public function get($name)
+	public function get($columns, $name)
 	{
 		$data['scalars']['comment'] = $this->db->value("
 			SELECT
@@ -111,7 +137,7 @@ class TablesDatabaseSchema
 		return $data;
 	}
 
-	public function put($name, $data)
+	public function put($columns, $name, $data)
 	{
 	}
 }

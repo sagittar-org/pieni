@@ -1,9 +1,10 @@
 <?php
 class Tables
 {
-	public function __construct($drivers)
+	public function __construct($drivers, $columns = [])
 	{
 		$this->drivers = $drivers;
+		$this->columns = $columns;
 	}
 
 	public function mtime($name)
@@ -20,7 +21,7 @@ class Tables
 	public function get($name, $first = false)
 	{
 		if ($first === true) {
-			return $this->drivers[0]->get($name);
+			return $this->drivers[0]->get($this->columns, $name);
 		}
 		$latest = ['index' => -1, 'mtime' => -1];
 		foreach ($this->drivers as $index => $driver) {
@@ -28,9 +29,9 @@ class Tables
 				$latest = ['index' => $index, 'mtime' => $mtime];
 			}
 		}
-		$data = $this->drivers[$latest['index']]->get($name);
+		$data = $this->drivers[$latest['index']]->get($this->columns, $name);
 		foreach ($this->drivers as $driver) {
-			$driver->put($name, $data);
+			$driver->put($this->columns, $name, $data);
 		}
 		return $data;
 	}

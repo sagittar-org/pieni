@@ -1,6 +1,44 @@
 <?php
 class TablesApplicationSchema
 {
+	public $columns = [
+		'scalars' => [
+			'comment',
+			'create_time',
+			'update_time',
+			'display',
+		],
+		'primary_keys' => [
+		],
+		'children' => [
+		],
+		'parents' => [
+			'column',
+			'parent_table',
+			'parent_column',
+			'update_rule',
+			'delete_rule',
+			'comment',
+		],
+		'columns' => [
+			'type',
+			'nullable',
+			'default',
+			'extra',
+			'comment',
+		],
+		'join' => [
+			'table',
+			'on',
+		],
+		'append' => [
+			'expr',
+			'after',
+		],
+		'hidden' => [
+		],
+	];
+
 	public function __construct($db, $database_schema_handler)
 	{
 		$this->db = $db;
@@ -12,7 +50,7 @@ class TablesApplicationSchema
 		return 0;
 	}
 
-	public function get($name)
+	public function get($columns, $name)
 	{
 		$database_schema = $this->database_schema_handler->get($name);
 		$data = $database_schema;
@@ -34,7 +72,7 @@ class TablesApplicationSchema
 		return $data;
 	}
 
-	public function put($name, $data)
+	public function put($columns, $name, $data)
 	{
 	}
 }
