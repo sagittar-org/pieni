@@ -12,29 +12,6 @@ class Welcome
 		if (!file_exists(FCPATH.'/application')) {
 			redirect('welcome/get_started');
 		}
-
-		// Instantiate database handler
-		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
-
-		// Instantiate database schema handler
-		instantiate_database_schema_handler(lib('db'));
-
-		// Instantiate application schema handler
-		instantiate_application_schema_handler(lib('db'), lib('database_schema_handler'));
-
-		// Get database schemas
-		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
-		foreach ($tables as $table) {
-			$vars['database_schemas'][$table] = lib('database_schema_handler')->get($table);
-		}
-
-		// Get application schemas
-		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
-		foreach ($tables as $table) {
-			$vars['application_schemas'][$table] = lib('application_schema_handler')->get($table);
-		}
-
-		return $vars;
 	}
 
 	public function get_started()
