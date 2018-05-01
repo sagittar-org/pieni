@@ -31,112 +31,38 @@
 
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs">
-						<li class="active"><a href="#tabDatabaseSchemaScalars" data-toggle="tab">Scalars</a></li>
-						<li><a href="#tabDatabaseSchemaPirmaryKeys" data-toggle="tab">Primary keys</a></li>
-						<li><a href="#tabDatabaseSchemaChildren" data-toggle="tab">Children</a></li>
-						<li><a href="#tabDatabaseSchemaParents" data-toggle="tab">Parents</a></li>
-						<li><a href="#tabDatabaseSchemaColumns" data-toggle="tab">Columns</a></li>
+<?php foreach (array_keys($vars['database_schema_columns']) as $i => $table_name): ?>
+						<li<?php if ($i === 0): ?> class="active"<?php endif; ?>><a href="#tabDatabaseSchema_<?php h($table_name); ?>" data-toggle="tab"><?php h($table_name); ?></a></li>
+<?php endforeach; ?>
 					</ul>
 
 					<!-- Tab panes -->
 					<div class="tab-content">
-						<div class="tab-pane active" id="tabDatabaseSchemaScalars">
-							<h4>Scalars</h4>
+<?php $i = 0; ?>
+<?php foreach ($vars['database_schema_columns'] as $table_name => $table): ?>
+						<div class="tab-pane<?php if ($i === 0): ?> active<?php endif; ?>" id="tabDatabaseSchema_<?php h($table_name); ?>">
+							<h4><?php h($table_name); ?></h4>
 							<table class="table table-condensed">
 								<thead>
 									<tr>
-										<th>ID</th>
-										<th>Value</th>
+										<th>id</th>
+<?php foreach ($table as $row_name): ?>
+										<th><?php h($row_name); ?></th>
+<?php endforeach; ?>
 									</tr>
 								</thead>
-								<tbody id="tableDatabaseSchema_scalars">
+								<tbody id="tableDatabaseSchema_<?php h($table_name); ?>">
 									<tr>
 										<td name="id">(ID)</td>
-										<td name="value">(Value)</td>
+<?php foreach ($table as $row_name): ?>
+										<td name="<?php h($row_name); ?>"></td>
+<?php endforeach; ?>
 									</tr>
 								</tbody>
 							</table>
 						</div>
-						<div class="tab-pane" id="tabDatabaseSchemaPirmaryKeys">
-							<h4>Primary keys</h4>
-							<table class="table table-condensed">
-								<thead>
-									<tr>
-										<th>ID</th>
-									</tr>
-								</thead>
-								<tbody id="tableDatabaseSchema_primary_keys">
-									<tr>
-										<td name="id">(ID)</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="tab-pane" id="tabDatabaseSchemaChildren">
-							<h4>Children</h4>
-							<table class="table table-condensed">
-								<thead>
-									<tr>
-										<th>ID</th>
-									</tr>
-								</thead>
-								<tbody id="tableDatabaseSchema_children">
-									<tr>
-										<td name="id">(ID)</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="tab-pane" id="tabDatabaseSchemaParents">
-							<h4>Parents</h4>
-							<table class="table table-condensed">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>Column</th>
-										<th>Parent table</th>
-										<th>Parent column</th>
-										<th>Updata time</th>
-										<th>Delete time</th>
-									</tr>
-								</thead>
-								<tbody id="tableDatabaseSchema_parents">
-									<tr>
-										<td name="id">(ID)</td>
-										<td name="column">(column)</td>
-										<td name="parent_table">(parent_table)</td>
-										<td name="parent_column">(parent_column)</td>
-										<td name="update_rule">(update_rule)</td>
-										<td name="delete_rule">(delete_rule)</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="tab-pane" id="tabDatabaseSchemaColumns">
-							<h4>Columns</h4>
-							<table class="table table-condensed">
-								<thead>
-									<tr>
-										<th>ID</th>
-										<th>Type</th>
-										<th>Nullable</th>
-										<th>Default</th>
-										<th>Extra</th>
-										<th>Comment</th>
-									</tr>
-								</thead>
-								<tbody id="tableDatabaseSchema_columns">
-									<tr>
-										<td name="id">(ID)</td>
-										<td name="type">(type)</td>
-										<td name="nullable">(nullable)</td>
-										<td name="default">(default)</td>
-										<td name="extra">(extra)</td>
-										<td name="comment">(comment)</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+<?php $i++; ?>
+<?php endforeach; ?>
 					</div>
 
 <script>

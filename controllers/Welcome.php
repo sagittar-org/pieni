@@ -27,7 +27,8 @@ class Welcome
 		if (!file_exists(FCPATH.'/application')) {
 			redirect('welcome/get_started');
 		}
-		$vars['columns'] = lib('database_schema_handler')->columns;
+		$vars['database_schema_columns'] = lib('database_schema_handler')->columns;
+		return $vars;
 	}
 
 	public function get_started()
@@ -36,7 +37,7 @@ class Welcome
 
 	public function start_hack()
 	{
-//		shell_exec('unzip -cq '.__DIR__.'/../misc/third_party/sakila/sakila.dump.zip | mysql -uroot');
+		shell_exec('unzip -cq '.__DIR__.'/../misc/third_party/sakila/sakila.dump.zip | mysql -uroot');
 		shell_exec('rm -r '.FCPATH.'/application');
 		mkdir(FCPATH.'/application');
 
