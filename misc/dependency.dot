@@ -1,6 +1,28 @@
 digraph database_schema {
 	rankdir=TB;
 
+	subgraph cluster_database_oriented {
+		label = "Database oriented";
+		aliases;
+		er_diagram;
+	}
+
+	subgraph cluster_table_oriented {
+		label = "Table oriented";
+		database_schema;
+		application_schema;
+	}
+
+	subgraph cluster_request_oriented {
+		label = "Request oriented";
+		request_schema;
+		view;
+		rendered_view;
+		model;
+		query;
+	}
+
+	physical_database [label="Physical database" shape="rect"];
 	database_schema [label="Database schema"];
 	aliases [label="Aliases" shape="rect"];
 	er_diagram [label="ER diagram"];
@@ -11,6 +33,7 @@ digraph database_schema {
 	model [label="Model" shape="rect"];
 	query [label="Query"];
 
+	physical_database -> database_schema [dir="back"];
 	database_schema -> aliases [dir="back"];
 	database_schema -> er_diagram [dir="back"];
 	aliases -> er_diagram [dir="back"];
