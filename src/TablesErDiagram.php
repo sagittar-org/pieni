@@ -25,6 +25,7 @@ class TablesErDiagram
 			$nodes[] = "{$alias_key} [label=\"{$alias_key}\"];";
 		}
 		$nodes_str = implode("\n\t", $nodes);
+		$edges = [];
 		foreach ($this->aliases_handler->get('aliases')['scalars'] as $alias_key => $alias) {
 			if ($alias['table'] !== $alias_key) continue;
 			foreach ($this->database_schema_handler->get($alias['table'])['parents'] as $parent_key => $parent) {
