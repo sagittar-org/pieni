@@ -43,7 +43,7 @@ class TablesApplicationSchema
 
 	public function mtime($name)
 	{
-		return 0;
+		return -1;
 	}
 
 	public function get($columns, $name)

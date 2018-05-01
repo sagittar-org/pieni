@@ -1,4 +1,3 @@
-				<div class="tab-pane active" id="tabDatabaseSchema">
 					<h3>Database schema</h3>
 
 					<!-- Nav tabs -->
@@ -60,4 +59,3 @@
 					}
 					getDatabaseSchema('actor');
 					</script>
-				</div>

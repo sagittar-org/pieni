@@ -1,4 +1,3 @@
-				<div class="tab-pane" id="tabApplicationSchema">
 					<h3>Application schema</h3>
 
 					<!-- Nav tabs -->
@@ -60,4 +59,3 @@
 					}
 					getApplicationSchema('actor');
 					</script>
-				</div>
