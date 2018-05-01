@@ -37,22 +37,27 @@
 <?php endforeach; ?>
 					</div>
 					<script>
-					$.ajax({
-						url: '<?php href('api/application_schema/index/address'); ?>',
-						dataType: 'json',
-						success: (vars) => {
-							for (let tableName in vars.data) {
-								let rowElementTemplate = $('#tableApplicationSchema_' + tableName + ' *:first');
-								for (let rowName in vars.data[tableName]) {
-									let rowElement = rowElementTemplate.clone();
-									rowElement.find('[name="id"]').text(rowName);
-									for (let columnName in vars.data[tableName][rowName]) {
-										rowElement.find('[name="' + columnName + '"]').text(vars.data[tableName][rowName][columnName]);
+					function getApplicationSchema(name)
+					{
+						$.ajax({
+							url: '<?php href('api/application_schema/index'); ?>/' + name,
+							dataType: 'json',
+							success: (vars) => {
+								for (let tableName in vars.data) {
+									$('#tableApplicationSchema_' + tableName + ' > *:nth-child(n + 2)').remove();
+									let rowElementTemplate = $('#tableApplicationSchema_' + tableName + ' *:first');
+									for (let rowName in vars.data[tableName]) {
+										let rowElement = rowElementTemplate.clone();
+										rowElement.find('[name="id"]').text(rowName);
+										for (let columnName in vars.data[tableName][rowName]) {
+											rowElement.find('[name="' + columnName + '"]').text(vars.data[tableName][rowName][columnName]);
+										}
+										$('#tableApplicationSchema_' + tableName).append(rowElement);
 									}
-									$('#tableApplicationSchema_' + tableName).append(rowElement);
 								}
-							}
-						},
-					});
+							},
+						});
+					}
+					getApplicationSchema('actor');
 					</script>
 				</div>

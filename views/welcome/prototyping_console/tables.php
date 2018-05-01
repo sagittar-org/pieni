@@ -1,10 +1,15 @@
 			<div id="tableTables">
 				<span class="hide">
-					<input name="table_name" type="radio" disabled onclick="getDatabaseSchema(this.value);">
+					<input name="table_name" type="radio" disabled onclick="getTables(this.value);">
 					<label name="id"></label>
 				</span>
 			</div>
 			<script>
+			function getTables(name)
+			{
+				getDatabaseSchema(name);
+				getApplicationSchema(name);
+			}
 			$.ajax({
 				url: '<?php href('api/aliases'); ?>',
 				dataType: 'json',
