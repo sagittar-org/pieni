@@ -4,25 +4,6 @@ class Welcome
 	public function __construct()
 	{
 		load_helper('tables');
-	}
-
-	public function index()
-	{
-		// Redirect to 'Get Started' page, if application directory does not exists
-		if (!file_exists(FCPATH.'/application')) {
-			redirect('welcome/get_started');
-		}
-	}
-
-	public function get_started()
-	{
-	}
-
-	public function start_hack()
-	{
-//		shell_exec('unzip -cq '.__DIR__.'/../misc/third_party/sakila/sakila.dump.zip | mysql -uroot');
-		shell_exec('rm -r '.FCPATH.'/application');
-		mkdir(FCPATH.'/application');
 
 		// Instantiate database handler
 		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
@@ -35,6 +16,26 @@ class Welcome
 
 		// Instantiate application schema handler
 		instantiate_application_schema_handler(lib('db'), lib('database_schema_handler'));
+	}
+
+	public function index()
+	{
+		// Redirect to 'Get Started' page, if application directory does not exists
+		if (!file_exists(FCPATH.'/application')) {
+			redirect('welcome/get_started');
+		}
+		$vars['columns'] = lib('database_schema_handler')->columns;
+	}
+
+	public function get_started()
+	{
+	}
+
+	public function start_hack()
+	{
+//		shell_exec('unzip -cq '.__DIR__.'/../misc/third_party/sakila/sakila.dump.zip | mysql -uroot');
+		shell_exec('rm -r '.FCPATH.'/application');
+		mkdir(FCPATH.'/application');
 
 		// Get ER diagram (using Aliases / Database schema)
 		foreach (lib('aliases_handler')->get('aliases')['scalars'] as $alias_key => $alias) {

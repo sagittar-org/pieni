@@ -1,14 +1,23 @@
 digraph database_schema {
-	rankdir=LR;
-	physical_database [label="Physical Database" shape="rect"];
-	database_schema [label="Database Schema"];
+	rankdir=TB;
+
+	database_schema [label="Database schema" shape="rect"];
 	aliases [label="Aliases"];
-	application_schema_excel [label="Application_Schema Excel" shape="rect"];
-	application_schema_mysql [label="Application_Schema MySQL" shape="rect"];
-	application_schema [label="Application Schema"];
-	physical_database -> database_schema;
-	database_schema -> aliases;
-	database_schema -> application_schema;
-	application_schema_excel -> application_schema;
-	application_schema_mysql -> application_schema;
+	er_diagram [label="ER diagram" shape="rect"];
+	application_schema [label="Application schema"];
+	request_schema [label="Request schema" shape="rect"];
+	view [label="View"];
+	rendered_view [label="Rendered view" shape="rect"];
+	model [label="Model"];
+	query [label="Query" shape="rect"];
+
+	database_schema -> aliases [dir="back"];
+	database_schema -> er_diagram [dir="back"];
+	aliases -> er_diagram [dir="back"];
+	database_schema -> request_schema [dir="back"];
+	application_schema -> request_schema [dir="back"];
+	request_schema -> rendered_view [dir="back"];
+	view -> rendered_view [dir="back"];
+	request_schema -> query [dir="back"];
+	model -> query [dir="back"];
 }
