@@ -5,7 +5,8 @@
 	<ul class="nav nav-tabs">
 		<li><a href="#tabErDiagram" data-toggle="tab">ER diagram</a></li>
 		<li><a href="#tabAliases" data-toggle="tab">Aliases</a></li>
-		<li class="active"><a href="#tabTables" data-toggle="tab">Tables</a></li>
+		<li><a href="#tabTables" data-toggle="tab">Tables</a></li>
+		<li class="active"><a href="#tabRequests" data-toggle="tab">Requests</a></li>
 	</ul>
 
 	<!-- Tab panes -->
@@ -19,9 +20,9 @@
 		<div class="tab-pane" id="tabAliases">
 <?php load_view('welcome', 'prototyping_console/aliases', $vars); ?>
 		</div>
-		<div class="tab-pane active" id="tabTables">
+		<div class="tab-pane" id="tabTables">
 			<h2>Tables</h2>
-<?php load_view('welcome', 'prototyping_console/tables', $vars); ?>
+<?php load_view('welcome', 'prototyping_console/table_selector', $vars); ?>
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tabDatabaseSchema" data-toggle="tab">Database schema</a></li>
@@ -32,6 +33,23 @@
 			<div class="tab-content">
 <?php load_view('welcome', 'prototyping_console/database_schema', $vars); ?>
 <?php load_view('welcome', 'prototyping_console/application_schema', $vars); ?>
+			</div>
+		</div>
+		<div class="tab-pane active" id="tabRequests">
+			<h2>Requests</h2>
+<?php load_view('welcome', 'prototyping_console/request_selector', $vars); ?>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tabRequestSchema" data-toggle="tab">Request schema</a></li>
+				<li><a href="#tabRenderedView" data-toggle="tab">Rendered view</a></li>
+				<li><a href="#tabQuery" data-toggle="tab">Query</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+<?php load_view('welcome', 'prototyping_console/request_schema', $vars); ?>
+<?php load_view('welcome', 'prototyping_console/rendered_view', $vars); ?>
+<?php load_view('welcome', 'prototyping_console/query', $vars); ?>
 			</div>
 		</div>
 	</div>

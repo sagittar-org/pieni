@@ -1,6 +1,21 @@
-			<div id="tableTables">
+			<h4>Actor</h4>
+			<div id="tableActorSelector">
 				<span class="hide">
-					<input name="table_name" type="radio" disabled onclick="getTables(this.value);">
+					<input name="alias_name" type="radio">
+					<label name="id"></label>
+				</span>
+			</div>
+			<h4>Alias</h4>
+			<div id="tableAliasSelector">
+				<span class="hide">
+					<input name="alias_name" type="radio">
+					<label name="id"></label>
+				</span>
+			</div>
+			<h4>Action</h4>
+			<div id="tableActionSelector">
+				<span class="hide">
+					<input name="action_name" type="radio">
 					<label name="id"></label>
 				</span>
 			</div>
@@ -14,10 +29,9 @@
 				url: '<?php href('api/aliases'); ?>',
 				dataType: 'json',
 				success: (vars) => {
-					let rowElementTemplate = $('#tableTables *:first');
+					let rowElementTemplate = $('#tableAliasSelector *:first');
 					let index = 0;
 					for (let rowName in vars.data.scalars) {
-						if (vars.data.scalars[rowName].table !== rowName) continue;
 						let rowElement = rowElementTemplate.clone();
 						rowElement.removeClass('hide');
 						rowElement.find('[type="radio"]').prop('disabled', false);
@@ -26,7 +40,7 @@
 							rowElement.find('[type="radio"]').prop('checked', true);
 						}
 						rowElement.find('[name="id"]').text(rowName);
-						$('#tableTables').append(rowElement);
+						$('#tableAliasSelector').append(rowElement);
 						index++;
 					}
 				},
