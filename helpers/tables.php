@@ -19,6 +19,16 @@ function instantiate_aliases_handler($db, $database_schema_handler)
 	]);
 }
 
+function instantiate_er_diagram_handler($database_schema_handler, $aliases_handler)
+{
+	load_library('Tables/TablesSvg', 'tables_svg_er_diagram', FCPATH.'/application/public');
+	load_library('TablesErDiagram', 'tables_er_diagram', $database_schema_handler, $aliases_handler);
+	load_library('Tables/Tables', 'er_diagram_handler', [
+		lib('tables_svg_er_diagram'),
+		lib('tables_er_diagram'),
+	]);
+}
+
 function instantiate_application_schema_handler($db, $database_schema_handler)
 {
 	load_library('Tables/TablesJson', 'tables_json_application_schema', FCPATH.'/application/application_schemas');

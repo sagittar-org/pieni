@@ -12,7 +12,7 @@
 		<div class="tab-pane" id="tabErDiagram">
 			<h2>ER diagram</h2>
 			<div style="overflow-x: scroll;">
-				<img src="<?php public_href('schema.svg'); ?>">
+				<img src="<?php public_href('er_diagram.svg'); ?>">
 			</div>
 		</div>
 		<div class="tab-pane active" id="tabTables">

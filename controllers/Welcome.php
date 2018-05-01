@@ -14,6 +14,9 @@ class Welcome
 		// Instantiate aliases handler
 		instantiate_aliases_handler(lib('db'), lib('database_schema_handler'));
 
+		// Instantiate ER diagram handler
+		instantiate_er_diagram_handler(lib('database_schema_handler'), lib('aliases_handler'));
+
 		// Instantiate application schema handler
 		instantiate_application_schema_handler(lib('db'), lib('database_schema_handler'));
 	}
@@ -38,22 +41,7 @@ class Welcome
 		mkdir(FCPATH.'/application');
 
 		// Get ER diagram (using Aliases / Database schema)
-		foreach (lib('aliases_handler')->get('aliases')['scalars'] as $alias_key => $alias) {
-			if ($alias['table'] !== $alias_key) continue;
-			$nodes[] = "{$alias_key} [label=\"{$alias_key}\"];";
-		}
-		$nodes_str = implode("\n\t", $nodes);
-		foreach (lib('aliases_handler')->get('aliases')['scalars'] as $alias_key => $alias) {
-			if ($alias['table'] !== $alias_key) continue;
-			foreach (lib('database_schema_handler')->get($alias['table'])['parents'] as $parent_key => $parent) {
-				$edges[] = "{$parent['parent_table']} -> {$alias['table']} [arrowhead=\"crow\", label=\"{$parent_key}\", fontsize=10];";
-			}
-		}
-		$edges_str = implode("\n\t", $edges);
-		$dot = "digraph database_schema {\n\trankdir=LR;\n\t{$nodes_str}\n\t{$edges_str}\n\t}\n";
-		@mkdir('application/public', 0755, true);
-		file_put_contents(FCPATH.'/application/schema.dot', $dot);
-		shell_exec('dot -Tsvg '.FCPATH.'/application/schema.dot > '.FCPATH.'/application/public/schema.svg');
+		lib('er_diagram_handler')->get('er_diagram');
 
 		// Get application schemas
 		$tables = array_column(lib('db')->query("SELECT `TABLE_NAME` FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` = '".lib('db')->database."' AND `TABLE_TYPE` = 'BASE TABLE'")->fetch_all(), 0);
