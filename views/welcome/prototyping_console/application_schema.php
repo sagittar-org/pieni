@@ -1,4 +1,4 @@
-				<div class="tab-pane active" id="tabApplicationSchema">
+				<div class="tab-pane" id="tabApplicationSchema">
 					<h3>Application schema</h3>
 
 					<!-- Nav tabs -->
