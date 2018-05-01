@@ -8,7 +8,7 @@
 			<h4>Alias</h4>
 			<div id="tableAliasSelector">
 				<span class="hide">
-					<input name="alias_name" type="radio">
+					<input name="alias_name" type="radio" disabled onclick="getRequests(this.value);">
 					<label name="id"></label>
 				</span>
 			</div>
@@ -20,10 +20,9 @@
 				</span>
 			</div>
 			<script>
-			function getTables(name)
+			function getRequests(name)
 			{
-				getDatabaseSchema(name);
-				getApplicationSchema(name);
+				getRequestSchema(name);
 			}
 			$.ajax({
 				url: '<?php href('api/aliases'); ?>',
