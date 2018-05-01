@@ -28,6 +28,7 @@ class Welcome
 			redirect('welcome/get_started');
 		}
 		$vars['database_schema_columns'] = lib('database_schema_handler')->columns;
+		$vars['aliases_columns'] = lib('aliases_handler')->columns;
 		$vars['application_schema_columns'] = lib('application_schema_handler')->columns;
 		return $vars;
 	}

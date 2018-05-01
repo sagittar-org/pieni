@@ -4,7 +4,8 @@
 	<!-- Nav tabs -->
 	<ul class="nav nav-tabs">
 		<li><a href="#tabErDiagram" data-toggle="tab">ER diagram</a></li>
-		<li class="active"><a href="#tabTables" data-toggle="tab">Tables</a></li>
+		<li class="active"><a href="#tabAliases" data-toggle="tab">Aliases</a></li>
+		<li><a href="#tabTables" data-toggle="tab">Tables</a></li>
 	</ul>
 
 	<!-- Tab panes -->
@@ -15,7 +16,10 @@
 				<img src="<?php public_href('er_diagram.svg'); ?>">
 			</div>
 		</div>
-		<div class="tab-pane active" id="tabTables">
+		<div class="tab-pane active" id="tabAliases">
+<?php load_view('welcome', 'prototyping_console/aliases', $vars); ?>
+		</div>
+		<div class="tab-pane" id="tabTables">
 			<h2>Tables</h2>
 
 			<!-- Nav tabs -->
