@@ -4,8 +4,8 @@
 	<!-- Nav tabs -->
 	<ul class="nav nav-tabs">
 		<li><a href="#tabDatabase" data-toggle="tab">Database</a></li>
-		<li class="active"><a href="#tabTables" data-toggle="tab">Tables</a></li>
-		<li><a href="#tabRequests" data-toggle="tab">Requests</a></li>
+		<li><a href="#tabTables" data-toggle="tab">Tables</a></li>
+		<li class="active"><a href="#tabRequests" data-toggle="tab">Requests</a></li>
 	</ul>
 
 	<!-- Tab panes -->
@@ -31,7 +31,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="tab-pane active" id="tabTables">
+		<div class="tab-pane" id="tabTables">
 			<h2>Tables</h2>
 <?php load_view('welcome', 'prototyping_console/table_selector', $vars); ?>
 			<!-- Nav tabs -->
@@ -50,7 +50,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="tab-pane" id="tabRequests">
+		<div class="tab-pane active" id="tabRequests">
 			<h2>Requests</h2>
 <?php load_view('welcome', 'prototyping_console/request_selector', $vars); ?>
 			<!-- Nav tabs -->
