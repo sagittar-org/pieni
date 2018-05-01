@@ -18,16 +18,16 @@
 								<thead>
 									<tr>
 										<th>id</th>
-<?php foreach ($table as $row_name): ?>
-										<th><?php h($row_name); ?></th>
+<?php foreach ($table as $column_name): ?>
+										<th><?php h($column_name); ?></th>
 <?php endforeach; ?>
 									</tr>
 								</thead>
 								<tbody id="tableDatabaseSchema_<?php h($table_name); ?>">
 									<tr>
 										<td name="id"></td>
-<?php foreach ($table as $row_name): ?>
-										<td name="<?php h($row_name); ?>"></td>
+<?php foreach ($table as $column_name): ?>
+										<td name="<?php h($column_name); ?>"></td>
 <?php endforeach; ?>
 									</tr>
 								</tbody>
