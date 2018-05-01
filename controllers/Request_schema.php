@@ -4,7 +4,8 @@ class Request_schema
 	public function index($name)
 	{
 		load_helper('tables');
-		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
+		instantiate_config_handler();
+		load_library('Db', 'db', lib('config_handler')->get('core')['db']);
 		instantiate_database_schema_handler(lib('db'));
 		instantiate_application_schema_handler(lib('db'), lib('database_schema_handler'));
 		instantiate_request_schema_handler(lib('database_schema_handler'), lib('application_schema_handler'));

@@ -1,4 +1,14 @@
 <?php
+function instantiate_config_handler($db = ['host' => '', 'user' => '', 'password' => '', 'database' => ''])
+{
+	load_library('Tables/TablesJson', 'tables_json_config', FCPATH.'/application/config');
+	load_library('TablesConfig', 'tables_config', $db);
+	load_library('Tables/Tables', 'config_handler', [
+		lib('tables_json_config'),
+		lib('tables_config'),
+	]);
+}
+
 function instantiate_database_schema_handler($db)
 {
 	load_library('Tables/TablesJson', 'tables_json_database_schema', FCPATH.'/application/database_schemas');

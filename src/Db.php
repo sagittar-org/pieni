@@ -1,10 +1,10 @@
 <?php
 class Db extends Mysqli
 {
-	public function __construct($host, $user, $password, $database)
+	public function __construct($config)
 	{
-		parent::__construct($host, $user, $password, $database);
-		$this->database = $database;
+		parent::__construct($config['host'], $config['user'], $config['password'], $config['database']);
+		$this->database = $config['database'];
 	}
 
 	public function query($query)

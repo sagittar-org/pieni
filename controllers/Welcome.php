@@ -14,8 +14,11 @@ class Welcome
 
 		load_helper('tables');
 
+		// Instantiate config handler
+		instantiate_config_handler();
+
 		// Instantiate database handler
-		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
+		load_library('Db', 'db', lib('config_handler')->get('core')['db']);
 
 		// Instantiate database schema handler
 		instantiate_database_schema_handler(lib('db'));
@@ -51,8 +54,16 @@ class Welcome
 
 		load_helper('tables');
 
+		// Instantiate config handler
+		instantiate_config_handler([
+			'host' => 'localhost',
+			'user' => 'root',
+			'password' => '',
+			'database' => 'sakila',
+		]);
+
 		// Instantiate database handler
-		load_library('Db', 'db', 'localhost', 'root', '', 'sakila');
+		load_library('Db', 'db', lib('config_handler')->get('core')['db']);
 
 		// Instantiate database schema handler
 		instantiate_database_schema_handler(lib('db'));
