@@ -1,6 +1,6 @@
 			<div id="tableTables">
 				<span class="hide">
-					<input name="table_name" type="radio" disabled>
+					<input name="table_name" type="radio" disabled onclick="getDatabaseSchema(this.value);">
 					<label name="id"></label>
 				</span>
 			</div>
@@ -16,6 +16,7 @@
 						let rowElement = rowElementTemplate.clone();
 						rowElement.removeClass('hide');
 						rowElement.find('[type="radio"]').prop('disabled', false);
+						rowElement.find('[type="radio"]').val(rowName);
 						if (index === 0) {
 							rowElement.find('[type="radio"]').prop('checked', true);
 						}

@@ -22,7 +22,6 @@
 				url: '<?php href('api/aliases'); ?>',
 				dataType: 'json',
 				success: (vars) => {
-console.log(vars.data.scalars);
 					let rowElementTemplate = $('#tableAliases *:first');
 					for (let rowName in vars.data.scalars) {
 						let rowElement = rowElementTemplate.clone();

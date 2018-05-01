@@ -37,22 +37,27 @@
 <?php endforeach; ?>
 					</div>
 					<script>
-					$.ajax({
-						url: '<?php href('api/database_schema/index/address'); ?>',
-						dataType: 'json',
-						success: (vars) => {
-							for (let tableName in vars.data) {
-								let rowElementTemplate = $('#tableDatabaseSchema_' + tableName + ' *:first');
-								for (let rowName in vars.data[tableName]) {
-									let rowElement = rowElementTemplate.clone();
-									rowElement.find('[name="id"]').text(rowName);
-									for (let columnName in vars.data[tableName][rowName]) {
-										rowElement.find('[name="' + columnName + '"]').text(vars.data[tableName][rowName][columnName]);
+					function getDatabaseSchema(name)
+					{
+						$.ajax({
+							url: '<?php href('api/database_schema/index'); ?>/' + name,
+							dataType: 'json',
+							success: (vars) => {
+								for (let tableName in vars.data) {
+									$('#tableDatabaseSchema_' + tableName + ' > *:nth-child(n + 2)').remove();
+									let rowElementTemplate = $('#tableDatabaseSchema_' + tableName + ' *:first');
+									for (let rowName in vars.data[tableName]) {
+										let rowElement = rowElementTemplate.clone();
+										rowElement.find('[name="id"]').text(rowName);
+										for (let columnName in vars.data[tableName][rowName]) {
+											rowElement.find('[name="' + columnName + '"]').text(vars.data[tableName][rowName][columnName]);
+										}
+										$('#tableDatabaseSchema_' + tableName).append(rowElement);
 									}
-									$('#tableDatabaseSchema_' + tableName).append(rowElement);
 								}
-							}
-						},
-					});
+							},
+						});
+					}
+					getDatabaseSchema('actor');
 					</script>
 				</div>
