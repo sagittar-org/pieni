@@ -34,11 +34,21 @@ function instantiate_application_schema_handler($db, $database_schema_handler)
 	load_library('Tables/TablesJson', 'tables_json_application_schema', FCPATH.'/application/application_schemas');
 	load_library('Tables/TablesExcel', 'tables_excel_application_schema', FCPATH.'/application/excel/application_schemas');
 	load_library('Tables/TablesMysql', 'tables_mysql_application_schema', $db->database.'_application_schemas', $db);
-	load_library('TablesApplicationSchema', 'tables_application_schema', $db, $database_schema_handler);
+	load_library('TablesApplicationSchema', 'tables_application_schema', $database_schema_handler);
 	load_library('Tables/Tables', 'application_schema_handler', [
 		lib('tables_json_application_schema'),
 		lib('tables_excel_application_schema'),
 		lib('tables_mysql_application_schema'),
 		lib('tables_application_schema'),
+	]);
+}
+
+function instantiate_request_schema_handler($database_schema_handler, $application_schema_handler)
+{
+	load_library('Tables/TablesJson', 'tables_json_request_schema', FCPATH.'/application/request_schemas');
+	load_library('TablesRequestSchema', 'tables_request_schema', $database_schema_handler, $application_schema_handler);
+	load_library('Tables/Tables', 'request_schema_handler', [
+		lib('tables_json_request_schema'),
+		lib('tables_request_schema'),
 	]);
 }
