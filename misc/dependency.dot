@@ -1,15 +1,15 @@
 digraph database_schema {
 	rankdir=TB;
 
-	database_schema [label="Database schema" shape="rect"];
-	aliases [label="Aliases"];
-	er_diagram [label="ER diagram" shape="rect"];
-	application_schema [label="Application schema"];
-	request_schema [label="Request schema" shape="rect"];
-	view [label="View"];
-	rendered_view [label="Rendered view" shape="rect"];
-	model [label="Model"];
-	query [label="Query" shape="rect"];
+	database_schema [label="Database schema"];
+	aliases [label="Aliases" shape="rect"];
+	er_diagram [label="ER diagram"];
+	application_schema [label="Application schema" shape="rect"];
+	request_schema [label="Request schema"];
+	view [label="View" shape="rect"];
+	rendered_view [label="Rendered view"];
+	model [label="Model" shape="rect"];
+	query [label="Query"];
 
 	database_schema -> aliases [dir="back"];
 	database_schema -> er_diagram [dir="back"];
