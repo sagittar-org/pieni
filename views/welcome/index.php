@@ -21,7 +21,7 @@
 			<!-- Tab panes -->
 			<div class="tab-content">
 				<div class="tab-pane active" id="tabErDiagram">
-					<h2>ER diagram</h2>
+					<h3>ER diagram</h3>
 					<div style="overflow-x: scroll;">
 						<img src="<?php public_href('er_diagram.svg'); ?>">
 					</div>

@@ -1,4 +1,4 @@
-			<h2>Aliases</h2>
+			<h3>Aliases</h3>
 			<table class="table table-condensed">
 				<thead>
 					<tr>
