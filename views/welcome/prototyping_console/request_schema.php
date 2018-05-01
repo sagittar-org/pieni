@@ -35,3 +35,27 @@
 <?php $i++; ?>
 <?php endforeach; ?>
 					</div>
+					<script>
+					function getRequestSchema(name)
+					{
+						$.ajax({
+							url: '<?php href('api/request_schema/index'); ?>/' + name,
+							dataType: 'json',
+							success: (vars) => {
+								for (let tableName in vars.data) {
+									$('#tableRequestSchema_' + tableName + ' > *:nth-child(n + 2)').remove();
+									let rowElementTemplate = $('#tableRequestSchema_' + tableName + ' *:first');
+									for (let rowName in vars.data[tableName]) {
+										let rowElement = rowElementTemplate.clone();
+										rowElement.find('[name="id"]').text(rowName);
+										for (let columnName in vars.data[tableName][rowName]) {
+											rowElement.find('[name="' + columnName + '"]').text(vars.data[tableName][rowName][columnName]);
+										}
+										$('#tableRequestSchema_' + tableName).append(rowElement);
+									}
+								}
+							},
+						});
+					}
+					getRequestSchema('actor');
+					</script>

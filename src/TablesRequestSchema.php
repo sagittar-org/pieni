@@ -27,13 +27,6 @@ class TablesRequestSchema
 			'table',
 			'on',
 		],
-		'columns' => [
-			'type',
-			'nullable',
-			'default',
-			'extra',
-			'comment',
-		],
 		'hidden' => [
 		],
 	];
@@ -46,7 +39,7 @@ class TablesRequestSchema
 
 	public function mtime($name)
 	{
-		return 0;
+		return time();
 	}
 
 	public function get($columns, $name)
@@ -55,12 +48,11 @@ class TablesRequestSchema
 		$application_schema = $this->application_schema_handler->get($name);
 		$data['scalars'] = $application_schema['scalars'];
 		$data['primary_keys'] = $database_schema['primary_keys'];
-		$data['parents'] = $database_schema['parents'];
+		$data['children'] = $database_schema['children'];
 		$data['parents'] = $database_schema['parents'];
 		$data['columns'] = $database_schema['columns'];
-		$data['join'] = $application_schema['scalars'];
-		$data['columns'] = $application_schema['scalars'];
-		$data['hidden'] = $application_schema['scalars'];
+		$data['join'] = $application_schema['join'];
+		$data['hidden'] = $application_schema['hidden'];
 		return $data;
 	}
 
