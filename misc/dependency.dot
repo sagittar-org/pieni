@@ -30,8 +30,9 @@ digraph database_schema {
 	query [label="Query"];
 
 	physical_database -> database_schema [dir="back"];
-	database_schema -> aliases [dir="back"];
+	database_schema -> aliases [dir="back" style="dotted"];
 	database_schema -> er_diagram [dir="back"];
+	database_schema -> application_schema [dir="back" style="dotted"];
 	aliases -> er_diagram [dir="back"];
 	database_schema -> request_schema [dir="back"];
 	application_schema -> request_schema [dir="back"];
