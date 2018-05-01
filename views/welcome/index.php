@@ -3,22 +3,33 @@
 
 	<!-- Nav tabs -->
 	<ul class="nav nav-tabs">
-		<li><a href="#tabErDiagram" data-toggle="tab">ER diagram</a></li>
-		<li><a href="#tabAliases" data-toggle="tab">Aliases</a></li>
+		<li><a href="#tabDatabase" data-toggle="tab">Database</a></li>
 		<li><a href="#tabTables" data-toggle="tab">Tables</a></li>
 		<li class="active"><a href="#tabRequests" data-toggle="tab">Requests</a></li>
 	</ul>
 
 	<!-- Tab panes -->
 	<div class="tab-content">
-		<div class="tab-pane" id="tabErDiagram">
-			<h2>ER diagram</h2>
-			<div style="overflow-x: scroll;">
-				<img src="<?php public_href('er_diagram.svg'); ?>">
-			</div>
-		</div>
-		<div class="tab-pane" id="tabAliases">
+		<div class="tab-pane" id="tabDatabase">
+			<h2>Database</h2>
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tabErDiagram" data-toggle="tab">ER diagram</a></li>
+				<li><a href="#tabAliases" data-toggle="tab">Aliases</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div class="tab-pane active" id="tabErDiagram">
+					<h2>ER diagram</h2>
+					<div style="overflow-x: scroll;">
+						<img src="<?php public_href('er_diagram.svg'); ?>">
+					</div>
+				</div>
+				<div class="tab-pane" id="tabAliases">
 <?php load_view('welcome', 'prototyping_console/aliases', $vars); ?>
+				</div>
+			</div>
 		</div>
 		<div class="tab-pane" id="tabTables">
 			<h2>Tables</h2>
