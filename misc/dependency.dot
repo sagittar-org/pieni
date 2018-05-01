@@ -16,9 +16,7 @@ digraph database_schema {
 	subgraph cluster_request_oriented {
 		label = "Request oriented";
 		request_schema;
-		view;
 		rendered_view;
-		model;
 		query;
 	}
 
@@ -28,9 +26,7 @@ digraph database_schema {
 	er_diagram [label="ER diagram"];
 	application_schema [label="Application schema" shape="rect"];
 	request_schema [label="Request schema"];
-	view [label="View" shape="rect"];
 	rendered_view [label="Rendered view"];
-	model [label="Model" shape="rect"];
 	query [label="Query"];
 
 	physical_database -> database_schema [dir="back"];
@@ -40,7 +36,5 @@ digraph database_schema {
 	database_schema -> request_schema [dir="back"];
 	application_schema -> request_schema [dir="back"];
 	request_schema -> rendered_view [dir="back"];
-	view -> rendered_view [dir="back"];
 	request_schema -> query [dir="back"];
-	model -> query [dir="back"];
 }
