@@ -19,6 +19,9 @@ class Welcome
 
 		// Instantiate application schema handler
 		instantiate_application_schema_handler(lib('db'), lib('database_schema_handler'));
+
+		// Instantiate request schema handler
+		instantiate_request_schema_handler(lib('database_schema_handler'), lib('application_schema_handler'));
 	}
 
 	public function index()
@@ -30,6 +33,7 @@ class Welcome
 		$vars['database_schema_columns'] = lib('database_schema_handler')->columns;
 		$vars['aliases_columns'] = lib('aliases_handler')->columns;
 		$vars['application_schema_columns'] = lib('application_schema_handler')->columns;
+		$vars['request_schema_columns'] = lib('request_schema_handler')->columns;
 		return $vars;
 	}
 
