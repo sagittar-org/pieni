@@ -1,41 +1,6 @@
-digraph database_schema {
-	rankdir=TB;
-
-	subgraph cluster_database_oriented {
-		label = "Database oriented";
-		aliases;
-		er_diagram;
-	}
-
-	subgraph cluster_table_oriented {
-		label = "Table oriented";
-		database_schema;
-		application_schema;
-	}
-
-	subgraph cluster_request_oriented {
-		label = "Request oriented";
-		request_schema;
-		rendered_view;
-		query;
-	}
-
-	physical_database [label="Physical database" shape="rect"];
-	database_schema [label="Database schema"];
-	aliases [label="Aliases" shape="rect"];
-	er_diagram [label="ER diagram"];
-	application_schema [label="Application schema" shape="rect"];
-	request_schema [label="Request schema"];
-	rendered_view [label="Rendered view"];
-	query [label="Query"];
-
-	physical_database -> database_schema [dir="back"];
-	database_schema -> aliases [dir="back" style="dotted"];
-	database_schema -> er_diagram [dir="back"];
-	database_schema -> application_schema [dir="back" style="dotted"];
-	aliases -> er_diagram [dir="back"];
-	database_schema -> request_schema [dir="back"];
-	application_schema -> request_schema [dir="back"];
-	request_schema -> rendered_view [dir="back"];
-	request_schema -> query [dir="back"];
+digraph dependency {
+	proto -> sync;
+	con -> proto;
+	con -> pieni;
+	pieni -> sync;
 }

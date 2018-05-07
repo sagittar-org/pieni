@@ -15,7 +15,13 @@
             "homepage": "https://github.com/sagittar-org"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "pieni\\": "src"
+        },
+        "files": ["src/util.php"]
+    },
     "require": {
-        "phpoffice/phpspreadsheet": "1.2.1"
+        "pieni/sync": "0.2.1"
     }
 }

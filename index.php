@@ -1,13 +1,10 @@
 <?php
-// Define packages
+require_once 'vendor/autoload.php';
 const FCPATH = __DIR__;
 $packages = [
 	FCPATH.'/application',
+	FCPATH.'/vendor/pieni/con',
 	FCPATH.'/vendor/pieni/pieni',
 ];
-
-// Load core helper
-require_once FCPATH.'/vendor/pieni/pieni/helpers/core.php';
-
-// Request and response
-response(request(isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/'));
+$req = new \pieni\Req();
+$req->response($req->request(php_sapi_name() !== 'cli' ? $_SERVER['PATH_INFO'] : $argv[1]));
