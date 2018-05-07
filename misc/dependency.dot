@@ -1,6 +1,5 @@
 digraph dependency {
 	proto -> sync;
-	con -> proto;
 	con -> pieni;
-	pieni -> sync;
+	pieni -> proto;
 }
