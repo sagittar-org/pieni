@@ -45,13 +45,20 @@ class Req
 	{
 		$params = ($path_info = trim($path_info, '/')) !== '' ? explode('/', $path_info) : [];
 		$this->type = isset($params[0]) && $params[0] === 'api' ? array_shift($params) : 'view';
+		$this->language = isset($params[0]) && in_array($params[0], array_slice(array_keys(g('config')['languages']), 1)) ? array_shift($params) : array_keys(g('config')['languages'])[0];
 		$this->actor = isset($params[0]) && in_array($params[0], array_slice(array_keys(g('config')['actors']), 1)) ? array_shift($params) : array_keys(g('config')['actors'])[0];
 		$GLOBALS['request_database'] = $this->request_database->get($this->actor);
 		$this->class = isset($params[0]) ? array_shift($params) : 'welcome';
 		$this->method = isset($params[0]) ? array_shift($params) : 'index';
 		$this->params = $params;
-		require_once Core::fallback([Core::g('packages'), ['controllers/'.ucfirst($this->class).'.php']]);
-		$controller = new $this->class();
+		$files = [ucfirst($this->class).'.php'];
+		if (in_array($this->class, array_keys(g('request_database')['tables'])) || in_array($this->class, array_keys(g('request_database')['references']))) {
+			$files[] = 'Crud.php';
+		}
+		$fallback = Core::fallback([Core::g('packages'), ['controllers'], $files]);
+		$actual_class = preg_replace('/\.php$/', '', basename($fallback));
+		require_once $fallback;
+		$controller = new $actual_class();
 		$vars = call_user_func_array([$controller, $this->method], $this->params);
 		return $vars;
 	}
@@ -59,7 +66,8 @@ class Req
 	public function response($vars)
 	{
 		if ($this->type === 'view') {
-			$vars['view'] = "{$this->class}/{$this->method}";
+			$vars['class'] = $this->class;
+			$vars['view'] = $this->method;
 			Load::view('response', $vars, '', $this->class);
 		} else {
 			echo json_encode($vars, JSON_PRETTY_PRINT)."\n";

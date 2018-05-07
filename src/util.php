@@ -1,4 +1,9 @@
 <?php
+function fallback($array)
+{
+	return \pieni\Core::fallback($array);
+}
+
 function g($path)
 {
 	return \pieni\Core::g($path);
@@ -29,7 +34,7 @@ function h($str)
 	\pieni\View::h($str);
 }
 
-function load_view($name, $vars = [], $indent = '', $class = '')
+function load_view($name, $vars = [], $indent = '', $class = null)
 {
 	\pieni\Load::view($name, $vars, $indent, $class);
 }
