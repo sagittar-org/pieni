@@ -22,6 +22,6 @@
         "files": ["src/util.php"]
     },
     "require": {
-        "pieni/proto": "0.1.1"
+        "pieni/proto": "0.1.*"
     }
 }

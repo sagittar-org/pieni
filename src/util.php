@@ -1,4 +1,9 @@
 <?php
+function g($path)
+{
+	return \pieni\Core::g($path);
+}
+
 function r($expr)
 {
 	\pieni\View::r($expr);
