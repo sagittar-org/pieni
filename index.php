@@ -3,7 +3,7 @@ require_once 'vendor/autoload.php';
 const FCPATH = __DIR__;
 $packages = [
 	FCPATH.'/application',
-	FCPATH.'/vendor/pieni/con',
+	FCPATH.'/vendor/pieni/console',
 	FCPATH.'/vendor/pieni/pieni',
 ];
 $req = new \pieni\Req();

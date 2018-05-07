@@ -1,5 +1,5 @@
 digraph dependency {
-	proto -> sync;
-	con -> pieni;
+	console -> pieni;
 	pieni -> proto;
+	proto -> sync;
 }
