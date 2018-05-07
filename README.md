@@ -8,7 +8,7 @@ Apache 2.4.x / MySQL 5.7.x / PHP 7.0.x
 
 ## Install
 ```bash
-composer require pieni/pieni:0.1.2
+composer require pieni/pieni
 cp vendor/pieni/pieni/index.php .
 cp vendor/pieni/pieni/.htaccess .
 cp vendor/pieni/pieni/.gitignore .
