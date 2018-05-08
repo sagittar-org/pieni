@@ -5,6 +5,7 @@
 <link href="<?php pub('default.css'); ?>" rel="stylesheet">
 <script src="<?php pub('third_party/jquery/jquery.min.js'); ?>"></script>
 <script src="<?php pub('third_party/bootstrap/js/bootstrap.min.js'); ?>"></script>
+<script src="<?php pub('crud.js'); ?>"></script>
 <script>const siteUrl = '<?php href(''); ?>';</script>
 <?php load_view('nav', $vars); ?>
 <?php load_view($vars['view'], $vars, '', $vars['class']); ?>
