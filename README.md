@@ -1,8 +1,26 @@
-<link href="https://fonts.googleapis.com/css?family=Ubuntu+Condensed" rel="stylesheet">
 <div align="center">
-<img src="https://raw.githubusercontent.com/sagittar-org/pieni/master/misc/logo.svg">
-<h1 style="font-family:'Ubuntu Condensed';color:#404040;font-size:60px;margin:0;">pieni</h1>
-<h2 style="font-family:'Ubuntu Condensed';color:#808080;font-size:30px;margin:0;">the rapid prototyping</h2>
+  <svg xmlns="http://www.w3.org/2000/svg" width="120px" height="120px">
+    <defs>
+      <linearGradient id="g" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0" stop-color="#800000" />
+        <stop offset="1" stop-color="#FF0000" />
+      </linearGradient>
+    </defs>
+    <path d="
+      M0,30
+      a30,30,0,0,1,60,0
+      v70
+      l-40,20
+      v-90
+      a10,10,0,0,0,-20,0
+      M40,40
+      a40,40,0,1,1,80,0
+      a40,40,0,1,1,-80,0
+      a20,20,0,1,0,40,0
+      a20,20,0,1,0,-40,0
+    " fill="url(#g)" />
+  </svg>
+  <h1>pieni - the rapid prototyping</h1>
 </div>
 <p align="center">
   <a href="https://packagist.org/packages/pieni/pieni" target="_blank">
