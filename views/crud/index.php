@@ -16,7 +16,9 @@
           <td name="<?php h($column_name); ?>"></td>
 <?php endforeach; ?>
           <td>
+<?php if (in_array('view', array_keys($vars['request_table']['actions']))): ?>
             <a class="action-view" data-href="<?php href("{$vars['alias']}/view"); ?>">view</a>
+<?php endif; ?>
           </td>
         <tr>
       </tbody>

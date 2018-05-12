@@ -1,7 +1,7 @@
 <?php
-function fallback($array)
+function fallback($array, $error = true)
 {
-	return \pieni\Core::fallback($array);
+	return \pieni\Core::fallback($array, $error);
 }
 
 function g($path)

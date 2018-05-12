@@ -3,16 +3,18 @@ namespace pieni;
 
 class Core
 {
-	public static function fallback($array)
+	public static function fallback($array, $error = true)
 	{
 		foreach (self::cartesian($array) as $fallback) {
 			if (file_exists($fallback)) {
 				return $fallback;
 			}
 		}
-		$backtrace = debug_backtrace()[2];
-		trigger_error("Fallback failed in {$backtrace['file']} on line {$backtrace['line']} <pre>".print_r(debug_backtrace()[0]['args'][0], true)."</pre>", E_USER_ERROR);
-		return false;
+		if ($error === true) {
+			$backtrace = debug_backtrace()[2];
+			trigger_error("Fallback failed in {$backtrace['file']} on line {$backtrace['line']} <pre>".print_r(debug_backtrace()[0]['args'][0], true)."</pre>", E_USER_ERROR);
+		}
+		return null;
 	}
 
 	public static function cartesian($array)
