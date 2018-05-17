@@ -1,4 +1,5 @@
 digraph dependency {
+	tutorial -> console;
 	console -> pieni;
 	pieni -> proto;
 	proto -> sync;
