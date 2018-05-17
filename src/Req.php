@@ -22,9 +22,14 @@ class Req
 			['\pieni\Sync\Excel', ['path' => FCPATH.'/sync/excel']],
 			['\pieni\Proto\ApplicationDatabase', ['actual_database' => $actual_database]],
 		]);
-		$this->request_database = new \pieni\Sync\Handler('request_database', [
+		$filter_database = new \pieni\Sync\Handler('filter_database', [
 			['\pieni\Sync\Json', ['path' => FCPATH.'/sync/json']],
-			['\pieni\Proto\RequestDatabase', ['application_database' => $application_database]],
+			['\pieni\Sync\Excel', ['path' => FCPATH.'/sync/excel']],
+			['\pieni\Proto\FilterDatabase', []],
+		]);
+		$this->request_database = $request_database = new \pieni\Sync\Handler('request_database', [
+			['\pieni\Sync\Json', ['path' => FCPATH.'/sync/json']],
+			['\pieni\Proto\RequestDatabase', ['actual_database' => $actual_database, 'application_database' => $application_database, 'filter_database' => $filter_database]],
 		]);
 		$actual_table = new \pieni\Sync\Handler('actual_table', [
 			['\pieni\Sync\Json', ['path' => FCPATH.'/sync/json']],
@@ -33,11 +38,16 @@ class Req
 		$application_table = new \pieni\Sync\Handler('application_table', [
 			['\pieni\Sync\Json', ['path' => FCPATH.'/sync/json']],
 			['\pieni\Sync\Excel', ['path' => FCPATH.'/sync/excel']],
-			['\pieni\Proto\ApplicationTable', ['actual_table' => $actual_table]],
+			['\pieni\Proto\ApplicationTable', ['config' => $config, 'actual_database' => $actual_database, 'actual_table' => $actual_table]],
+		]);
+		$filter_table = new \pieni\Sync\Handler('filter_table', [
+			['\pieni\Sync\Json', ['path' => FCPATH.'/sync/json']],
+			['\pieni\Sync\Excel', ['path' => FCPATH.'/sync/excel']],
+			['\pieni\Proto\FilterTable', []],
 		]);
 		$GLOBALS['request_table'] = new \pieni\Sync\Handler('request_table', [
 			['\pieni\Sync\Json', ['path' => FCPATH.'/sync/json']],
-			['\pieni\Proto\RequestTable', ['request_database' => $this->request_database, 'application_table' => $application_table]],
+			['\pieni\Proto\RequestTable', ['request_database' => $request_database, 'actual_table' => $actual_table, 'application_table' => $application_table, 'filter_table' => $filter_table]],
 		]);
 	}
 
